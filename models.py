@@ -1,5 +1,3 @@
-import pymysql
-
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.mutable import MutableDict, MutableList
@@ -8,11 +6,10 @@ from sqlalchemy.orm import sessionmaker
 
 import settings
 
-pymysql.install_as_MySQLdb()
 
 # 创建 SQLAlchemy 的引擎对象
 engine = create_engine(
-    "mysql+pymysql://root:root@127.0.0.1:3306/proxy_server",
+    "mysql+mysqlconnector://root:root@127.0.0.1:3306/proxy_server",
     max_overflow=0,  # 超过连接池大小外最多创建的连接
     pool_size=5,  # 连接池大小
     pool_timeout=30,  # 池中没有线程最多等待的时间，否则报错

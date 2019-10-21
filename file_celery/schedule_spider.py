@@ -3,9 +3,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 from . import logger
 from .. import settings
+from .. import celery_app
 from ..models import Session, Proxy
 from utils.proxy_check import check_proxy
-from .. import celery_app
 
 
 class RunSpider:
@@ -48,22 +48,24 @@ class RunSpider:
             for proxy in spider.get_proxies():
                 # 检验代理 ip 的可用性
                 proxy = check_proxy(proxy)
-
                 # 如果 speed 不为 -1 说明可用，则保存到数据库中
                 if proxy.speed != -1:
                     session = Session()
-                    exist = session.query(Proxy).filter(Proxy.ip == proxy.ip, Proxy.port == proxy.port).first()
+                    exist = session.query(Proxy)\
+                        .filter(Proxy.ip == str(proxy.ip), Proxy.port == str(proxy.port))\
+                        .first()
+
                     if not exist:
                         obj = Proxy(
-                            ip=proxy.ip,
-                            port=proxy.port,
+                            ip=str(proxy.ip),
+                            port=str(proxy.port),
                             protocol=proxy.protocol,
                             nick_type=proxy.nick_type,
                             speed=proxy.speed,
-                            area=proxy.area,
+                            area=str(proxy.area),
                             score=proxy.score,
                             disable_domain=proxy.disable_domain,
-                            origin=proxy.origin
+                            origin=str(proxy.origin)
                         )
                         session.add(obj)
                         session.commit()
@@ -115,3 +117,4 @@ def schedule_spider():
 
 if __name__ == '__main__':
     RunSpider.start()
+# celery worker -A Proxy_Server --loglevel=info --pool=solo

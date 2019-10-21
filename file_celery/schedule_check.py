@@ -3,10 +3,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 from . import logger
 from .. import settings
+from .. import celery_app
 from ..models import Session, Proxy
 from utils.proxy_check import check_proxy
-from .. import celery_app
-
 
 class ProxyTest:
     def __init__(self):

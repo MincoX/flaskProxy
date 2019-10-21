@@ -16,7 +16,3 @@ log_file_handler.setLevel(logging.DEBUG)
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logger.addHandler(log_file_handler)
-
-stream_handler = logging.StreamHandler(sys.stdout)
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
