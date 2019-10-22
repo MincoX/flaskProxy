@@ -8,7 +8,7 @@ class XiciSpider(BaseSpider):
     """
     实现西刺代理的爬取
     """
-    urls = [f'https://www.xicidaili.com/nn/{x}' for x in range(1, 11)]
+    urls = [f'https://www.xicidaili.com/nn/{x}' for x in range(1, 20)]
 
     group_xpath = "//*[@id='ip_list']/tr[position()>1]"
     detail_xpath = {
@@ -61,7 +61,7 @@ class Ip66Spider(BaseSpider):
     http://www.66ip.cn/1.html
     实现 66ip 网站代理 ip 的爬取
     """
-    urls = [f'http://www.66ip.cn/{x}.html' for x in range(1, 11)]
+    urls = [f'http://www.66ip.cn/{x}.html' for x in range(1, 20)]
 
     group_xpath = "//*[@id='main']/div/div[1]/table/tr[position()>1]"
 

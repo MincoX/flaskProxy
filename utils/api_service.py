@@ -6,6 +6,7 @@ import importlib
 
 from flask import request, abort
 
+from utils import logger
 from models import Session, Proxy
 
 
@@ -52,7 +53,8 @@ def service_view(slug):
     else:
         module = importlib.import_module(f'App.api_v1.{module_name}')
         service_obj = getattr(module, f'post_{func_name}')
-        ret = service_obj(json.loads(request.data.decode('utf-8')))
+        ret = service_obj(**request.args.to_dict())
+        # ret = service_obj(json.loads(request.data.decode('utf-8')))
 
     # 判断 api 接口是不是 ApiService 的实例（即 api 接口是不是添加了 ApiService 装饰器（因为后期会在装饰器中进行权限校验））
     # if type(service_obj) in (types.MethodType, ApiService):

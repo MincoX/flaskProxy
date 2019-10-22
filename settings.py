@@ -46,8 +46,9 @@ config_map = {
 
 ADMIN_NAVIGATE = [
     {'nav': '系统概况', 'href': 'dashboard'},
-    {'nav': '权限配置', 'href': 'permissions'},
+    {'nav': '权限配置', 'href': 'permission'},
     {'nav': '系统配置', 'href': 'config'},
+    {'nav': '留言板块', 'href': 'message'},
 ]
 
 USER_NAVIGATE = [
@@ -81,5 +82,5 @@ TEST_PROXIES_ASYNC_COUNT = 6
 TEST_PROXIES_INTERVAL = 2
 
 # 配置获取最大代理 ip 的数量， 值越小可用性越高，但是随机性差
-PROXIES_MAX_COUNT = 8
+PROXIES_MAX_COUNT = 10
 # ################################## main settings ##################################

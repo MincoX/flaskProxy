@@ -47,7 +47,7 @@ def create_app(config_name):
     Session(app)
 
     # 为 app 开启 csrf 防护
-    CSRFProtect(app)
+    # CSRFProtect(app)
 
     # 注册蓝图
     from App.api_v1 import api_v1_app  # 放在此刻导入是为了解决循环导入

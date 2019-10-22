@@ -1,8 +1,9 @@
 import hashlib
 import json
 
+from flask_wtf.csrf import generate_csrf
 from sqlalchemy.orm.exc import NoResultFound
-from flask import request, render_template, redirect, abort, jsonify
+from flask import request, render_template, redirect, abort, jsonify, make_response
 from flask_login import login_user, login_required, logout_user, current_user
 
 import settings
@@ -74,10 +75,22 @@ def index():
     return api_v1_app.send_static_file('index.html')
 
 
+# @api_v1_app.after_request
+# def after_request(response):
+#     # 调用函数生成csrf token
+#     csrf_token = generate_csrf()
+#     # 设置cookie传给前端
+#     response.set_cookie('csrf_token', csrf_token)
+#     print(csrf_token + '*' * 100)
+#     return response
+
+
 @api_v1_app.route('/api/<slug>/', methods=['POST', 'GET'])
-@login_required
+# @login_required
 def service(slug):
     session = Session()
     account = session.query(Admin).first()
     login_user(account, remember=True)
-    return str(service_view(slug))
+    resp = make_response(str(service_view(slug)))
+    resp.set_cookie('csrf_token', 'abctest')
+    return resp

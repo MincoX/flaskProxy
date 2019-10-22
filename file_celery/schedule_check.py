@@ -7,6 +7,7 @@ from .. import celery_app
 from ..models import Session, Proxy
 from utils.proxy_check import check_proxy
 
+
 class ProxyTest:
     def __init__(self):
         self.queue = Queue()
@@ -84,6 +85,11 @@ class ProxyTest:
         类方法，方便程序组合提供统一入口
         :return:
         """
+        session = Session()
+        count = session.query(Proxy).count()
+        session.close()
+
+        logger.info(f'schedule_check start! | count:{count}')
         proxy_tester = cls()
         proxy_tester.run()
 
