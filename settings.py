@@ -6,6 +6,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'Proxy_Server'))
 
 SECRET_KEY = 'ip_pool_flask_server'
+ADMIN_NAME = 'MincoX'
+ADMIN_PASSWORD = 'mincoroot'
 
 
 # ################################## flask config ##################################
@@ -46,7 +48,7 @@ config_map = {
 
 ADMIN_NAVIGATE = [
     {'nav': '系统概况', 'href': 'dashboard'},
-    {'nav': '权限配置', 'href': 'permission'},
+    {'nav': '权限分配', 'href': 'permission'},
     {'nav': '系统配置', 'href': 'config'},
     {'nav': '留言板块', 'href': 'message'},
 ]
