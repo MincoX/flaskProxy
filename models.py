@@ -61,8 +61,11 @@ class Admin(Base):
 
     roles = relationship('Role', secondary=rel_admin_role, back_populates='admins')
 
-    # def is_authenticated(self):
-    #     return True
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
 
     def is_anonymous(self):
         return False

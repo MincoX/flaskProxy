@@ -75,16 +75,6 @@ def index():
     return api_v1_app.send_static_file('index.html')
 
 
-# @api_v1_app.after_request
-# def after_request(response):
-#     # 调用函数生成csrf token
-#     csrf_token = generate_csrf()
-#     # 设置cookie传给前端
-#     response.set_cookie('csrf_token', csrf_token)
-#     print(csrf_token + '*' * 100)
-#     return response
-
-
 @api_v1_app.route('/api/<slug>/', methods=['POST', 'GET'])
 # @login_required
 def service(slug):

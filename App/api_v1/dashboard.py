@@ -4,7 +4,7 @@ from flask_login import current_user
 
 import settings
 from models import Admin, Proxy
-from utils.tools import object_to_dict, object_to_list
+from utils.tools import object_to_dict
 from utils.api_service import ApiService
 
 
@@ -43,8 +43,7 @@ def get_navigate(service):
     :param service:
     :return:
     """
-    role = current_user.role
-    if role == 'admin':
+    if current_user.__tablename__ == 'admin':
         res = settings.ADMIN_NAVIGATE
 
     else:
@@ -80,4 +79,3 @@ def get_proxies(service):
 
 if __name__ == '__main__':
     a = get_navigate()
-    print(a)
