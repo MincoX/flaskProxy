@@ -81,6 +81,7 @@ def service(slug):
     session = Session()
     account = session.query(Admin).first()
     login_user(account, remember=True)
-    resp = make_response(str(service_view(slug)))
-    resp.set_cookie('csrf_token', 'abctest')
-    return resp
+    res = service_view(slug)
+    response = make_response(res)
+
+    return response
