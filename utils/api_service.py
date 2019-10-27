@@ -53,7 +53,7 @@ def service_view(slug):
     else:
         module = importlib.import_module(f'App.api_v1.{module_name}')
         service_obj = getattr(module, f'post_{func_name}')
-        logger.info(**request.args.to_dict())
+
         ret = service_obj(**request.args.to_dict())
         # ret = service_obj(json.loads(request.data.decode('utf-8')))
 
