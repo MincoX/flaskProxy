@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.mutable import MutableDict, MutableList
-from sqlalchemy import create_engine, Column, Integer, String, Float, JSON, Table, ForeignKey, DateTime, func
+from sqlalchemy import create_engine, Column, Integer, String, Float, JSON, Table, ForeignKey, DateTime, func, Boolean
 
 import settings
 
@@ -9,8 +9,8 @@ engine = create_engine(
     "mysql+mysqlconnector://root:root@127.0.0.1:3306/proxy_server",
     max_overflow=0,  # 超过连接池大小外最多创建的连接
     pool_size=200,  # 连接池大小
-    pool_timeout=15,  # 连接池中没有已建立的连接时，新建立 http 连接最多等待的时间
-    pool_recycle=5,  # session 对象被重置，防止 mysql 清除建立的 http 连接后，session 对象还保持原有会话而报错
+    pool_timeout=10,  # 连接池中没有已建立的连接时，新建立 http 连接最多等待的时间
+    pool_recycle=30,  # session 对象被重置，防止 mysql 清除建立的 http 连接后，session 对象还保持原有会话而报错
 )
 
 Base = declarative_base()
@@ -56,6 +56,7 @@ class Admin(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String(128), unique=True, nullable=False)
     password = Column(String(256), nullable=False)
+    active = Column(Boolean, default=True)
     auth_key = Column(String(256), default='')
     create_time = Column(DateTime, default=func.now())
 
