@@ -1,10 +1,14 @@
 import json
+from datetime import datetime, timedelta
 
+from flask import request
 from flask_login import current_user
+from sqlalchemy import cast, DATE, func, and_
 
 import settings
+from utils import logger
 from models import Admin, Proxy
-from utils.tools import object_to_dict
+from utils.tools import object_to_dict, hour_range
 from utils.api_service import ApiService
 
 
@@ -53,29 +57,97 @@ def get_navigate(service):
 
 
 @ApiService
-def get_charts(service):
+def get_line_chart(service):
     """
     获取近期爬虫曲线图
     :param service:
     :return:
     """
-    return ''
+    session = service.session
+
+    lt = session.query(Proxy).order_by(Proxy.create_time.desc()).first().create_time
+    bt = lt + timedelta(days=-1)
+    label = hour_range(bt.strftime("%Y-%m-%d %H"), lt.strftime("%Y-%m-%d %H"))[::3]
+    label = [per + ':00' for per in label]
+    relabel = label[1:] + [(lt + timedelta(hours=1)).strftime("%Y-%m-%d %H") + ':00']
+
+    def get_count(l, r, n):
+        return session.query(Proxy).filter(Proxy.create_time.between(l, r), Proxy.origin == n).count()
+
+    xicidaili = map(get_count, label, relabel, ['xicidaili'] * len(label))
+    kuaidaili = map(get_count, label, relabel, ['kuaidaili'] * len(label))
+    ip3366 = map(get_count, label, relabel, ['ip3366'] * len(label))
+
+    res = {
+        'status': 1,
+        'label': [l[5:] for l in label],
+        'xicidaili': list(xicidaili),
+        'kuaidaili': list(kuaidaili),
+        'ip3366': list(ip3366),
+    }
+
+    return json.dumps(res)
 
 
 @ApiService
-def get_proxies(service):
+def get_total_active_scale(ser):
     """
-    获取高性能的代理展示与首页
-    :param service:
+    获取活跃量和总量的比例
+    :param ser:
     :return:
     """
-    session = service.session
+    session = ser.session
+
     proxies = session.query(Proxy).all()
 
-    res = [object_to_dict(proxy) for proxy in proxies]
+    scale = {
+        'xici': f'{len([item for item in proxies if item.origin == "xicidaili" and item.speed != -1])} / {len([item for item in proxies if item.origin == "xicidaili"])}',
+        'xici_scale': f'{round(len([item for item in proxies if item.origin == "xicidaili" and item.speed != -1]) / len([item for item in proxies if item.origin == "xicidaili"]) * 100, 1)}%',
+        'kuaidaili': f"{len([item for item in proxies if item.origin == 'kuaidaili' and item.speed != -1])} / {len([item for item in proxies if item.origin == 'kuaidaili'])}",
+        'kuaidaili_scale': f'{round(len([item for item in proxies if item.origin == "kuaidaili" and item.speed != -1]) / len([item for item in proxies if item.origin == "kuaidaili"]) * 100, 1)}%',
+        'ip3366': f"{len([item for item in proxies if item.origin == 'ip3366' and item.speed != -1])} / {len([item for item in proxies if item.origin == 'ip3366'])}",
+        'ip3366_scale': f'{round(len([item for item in proxies if item.origin == "ip3366" and item.speed != -1]) / len([item for item in proxies if item.origin == "ip3366"]) * 100, 1)}%',
+        '66ip': f"{len([item for item in proxies if item.origin == '66ip' and item.speed != -1])} / {len([item for item in proxies if item.origin == '66ip'])}",
+        '66ip_scale': f'{round(len([item for item in proxies if item.origin == "66ip" and item.speed != -1]) / len([item for item in proxies if item.origin == "66ip"]) * 100, 1)}%',
+    }
+
+    res = {
+        'status': 1,
+        'scale': scale
+    }
+
+    return json.dumps(res)
+
+
+@ApiService
+def get_pie_chart(ser):
+    """
+    获取饼状图数据
+    :return:
+    """
+    session = ser.session
+    grouped = session.query(Proxy.origin, func.count(Proxy.id)).group_by(Proxy.origin).all()
+    label = [i[0] for i in grouped]
+    data = [i[1] for i in grouped]
+    num = sum(data)
+
+    res = {
+        'status': 1,
+        'label': label,
+        'data': data,
+        'scale': [
+            round((data[i] / num) * 100, 2) for i in range(len(data))
+        ],
+        'grouped': grouped
+    }
+
+    logger.info(res)
 
     return json.dumps(res)
 
 
 if __name__ == '__main__':
-    a = get_navigate()
+    b = get_line_chart()
+    print(b)
+    # a = map(test, la, rela)
+    # print(list(a))
