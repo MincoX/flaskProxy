@@ -37,7 +37,7 @@ def init_system():
 
     admin = Admin(
         username=settings.ADMIN_NAME,
-        password=hashlib.md5((settings.ADMIN_PASSWORD + settings.SECRET_KEY).encode()).hexdigest()
+        password=hashlib.md5((settings.ADMIN_PASSWORD + settings.SECRET_KEY).encode()).hexdigest(),
     )
 
     session.add(admin)
