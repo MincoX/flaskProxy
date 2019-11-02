@@ -11,23 +11,22 @@ from utils.proxy_check import check_proxy
 
 
 @ApiService
-def get_proxies(service):
+def get_proxies(service, limit=5):
     """
-    获取高可用代理
+    获取高性能的代理展示与首页
+    :param limit:
     :param service:
     :return:
     """
     session = service.session
 
-    proxies = session.query(Proxy) \
-        .filter(Proxy.speed != -1) \
-        .order_by(Proxy.speed) \
-        .limit(settings.PROXIES_MAX_COUNT) \
-        .all()
+    proxies = session.query(Proxy).filter(Proxy.speed != -1).all()
+    res = {
+        'status': 1,
+        'proxies': [object_to_dict(proxy) for proxy in proxies],
+    }
 
-    proxies = [object_to_dict(proxy) for proxy in proxies]
-
-    return json.dumps(proxies)
+    return json.dumps(res)
 
 
 @ApiService
