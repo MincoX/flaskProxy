@@ -1,7 +1,8 @@
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.mutable import MutableDict, MutableList
-from sqlalchemy import create_engine, Column, Integer, String, Float, JSON, Table, ForeignKey, DateTime, func, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, Float, JSON, Table, \
+    ForeignKey, DateTime, func, Boolean, Text, LargeBinary
 
 import settings
 
@@ -57,6 +58,7 @@ class Admin(Base):
     username = Column(String(128), unique=True, nullable=False)
     password = Column(String(256), nullable=False)
     active = Column(Boolean, default=True)
+    header = Column(LargeBinary, nullable=True)
     auth_key = Column(String(256), default='')
     create_time = Column(DateTime, default=func.now())
 
@@ -90,6 +92,19 @@ class AdminLoginLog(Base):
     admin = relationship('Admin', backref=backref('logs', lazy='select'))
 
 
+class Message(Base):
+    __tablename__ = 'message'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(128), default='')
+    content = Column(Text)
+    status = Column(Integer, default=0)
+    create_time = Column(DateTime, default=func.now())
+
+    admin_id = Column(Integer, ForeignKey('admin.id'))
+    admin = relationship('Admin', backref=backref('messages', lazy='select'))
+
+
 class Proxy(Base):
     __tablename__ = 'proxy'
 
@@ -107,6 +122,7 @@ class Proxy(Base):
     # 代理 ip 的不可用域名列表
     disable_domain = Column(MutableList.as_mutable(JSON), default=[])
     origin = Column(String(128), default='')
+    create_time = Column(DateTime, default=func.now())
 
 
 def init_db():
