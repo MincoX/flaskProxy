@@ -92,7 +92,7 @@ def post_add_perm(ser):
     session.commit()
 
     res = {
-        'status': '',
+        'status': 1,
         'message': '权限添加成功'
     }
 

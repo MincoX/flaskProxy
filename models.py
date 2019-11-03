@@ -30,12 +30,14 @@ rel_role_perm = Table(
 )
 
 protocol_map = {
+    -1: '不可用',
     0: 'http',
     1: 'https',
     2: 'http/https'
 }
 
 nick_type_map = {
+    -1: '不可用',
     0: '高匿',
     1: '匿名',
     2: '透明'

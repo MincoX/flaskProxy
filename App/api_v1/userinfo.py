@@ -21,8 +21,11 @@ def get_user_info(ser):
 
     res = {
         'status': 1,
-        'user_info': [object_to_dict(user)]
+        'user_info': [object_to_dict(user)],
+        # 'identity': user.roles[:-1][0].name
     }
+
+    logger.info(res)
 
     del res['user_info'][0]['password']
     del res['user_info'][0]['auth_key']
@@ -31,4 +34,4 @@ def get_user_info(ser):
 
 
 if __name__ == '__main__':
-    print(get_user_info())
+    pass
