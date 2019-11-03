@@ -15,26 +15,26 @@
 <body>
 <div id="app">
 
-    <h1>Unique Login Form</h1>
+    <h1>代理服务</h1>
     <div class="log">
         <div class="content1" :style="{display:(cur_form==false?'none':'')}">
-            <h2>Sign In Form</h2>
+            <h2>登录</h2>
             <p style="color: red;">{{ tip }}</p>
 
             <form action="/login" method="post">
 {#                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">#}
                 <input type="text" name="username" value="USERNAME" onfocus="this.value = '';"
-                       onblur="if (this.value == '') {this.value = 'USERNAME';}">
+                       onblur="if (this.value == '') {this.value = '用户名';}">
                 <input type="password" name="password" value="PASSWORD" onfocus="this.value = '';"
-                       onblur="if (this.value == '') {this.value = 'PASSWORD';}">
+                       onblur="if (this.value == '') {this.value = '密码';}">
 
-                <div style="margin-top: 20px; ">
-                    <input type="checkbox" name="remember" id="remember">Remember Me
-                </div>
+{#                <div style="margin-top: 20px; ">#}
+{#                    <input type="checkbox" name="remember" id="remember">Remember Me#}
+{#                </div>#}
 
                 <div class="button-row">
-                    <input type="submit" class="sign-in" value="Sign In">
-                    <input type="reset" class="reset" value="Reset">
+                    <input type="submit" class="sign-in" value="登录">
+                    <input type="reset" class="reset" value="重置">
                     <div class="clear"></div>
                 </div>
             </form>
@@ -44,7 +44,7 @@
         </div>
 
         <div class="content2" :style="{display:(cur_form==true?'none':'')}">
-            <h2>Sign Up Form</h2>
+            <h2>注册</h2>
 
             <form>
                 <input type="text" name="userid" value="USERNAME" onfocus="this.value = '';"
@@ -55,7 +55,7 @@
                        onblur="if (this.value == '') {this.value = 'EMAIL ADDRESS';}">
                 <input type="password" name="psw" value="PASSWORD" onfocus="this.value = '';"
                        onblur="if (this.value == '') {this.value = 'PASSWORD';}">
-                <input type="submit" class="register" value="Register">
+                <input type="submit" class="register" value="注册">
             </form>
 
 
