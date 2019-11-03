@@ -74,7 +74,7 @@ class Admin(Base):
     active = Column(Boolean, default=True)
     header = Column(LargeBinary, nullable=True)
     auth_key = Column(String(256), default='')
-    create_time = Column(DateTime, default=func.now())
+    create_time = Column(DateTime(timezone=True), default=func.now())
 
     roles = relationship('Role', secondary=rel_admin_role, back_populates='admins')
 
@@ -99,7 +99,7 @@ class AdminLoginLog(Base):
 
     id = Column(Integer, primary_key=True)
     ip = Column(String(32), default='127.0.0.1')
-    create_time = Column(DateTime, default=func.now())
+    create_time = Column(DateTime(timezone=True), default=func.now())
 
     admin_id = Column(Integer, ForeignKey('admin.id'))
     # lazy=select, return all object,  lazy=dynamic, return query object
@@ -113,7 +113,7 @@ class Message(Base):
     title = Column(String(128), default='')
     content = Column(Text)
     status = Column(Integer, default=0)
-    create_time = Column(DateTime, default=func.now())
+    create_time = Column(DateTime(timezone=True), default=func.now())
 
     admin_id = Column(Integer, ForeignKey('admin.id'))
     admin = relationship('Admin', backref=backref('messages', lazy='select'))
@@ -136,7 +136,7 @@ class Proxy(Base):
     # 代理 ip 的不可用域名列表
     disable_domain = Column(MutableList.as_mutable(JSON), default=[])
     origin = Column(String(128), default='')
-    create_time = Column(DateTime, default=func.now())
+    create_time = Column(DateTime(timezone=True), default=func.now())
 
 
 def init_db():
