@@ -46,14 +46,12 @@
         <div class="content2" :style="{display:(cur_form==true?'none':'')}">
             <h2>注册</h2>
 
-            <form>
-                <input type="text" name="userid" value="USERNAME" onfocus="this.value = '';"
+            <form action="/register" method="post">
+                <input type="text" name="username" value="USERNAME" onfocus="this.value = '';"
                        onblur="if (this.value == '') {this.value = 'NAME AND SURNAME';}">
-                <input type="tel" name="usrtel" value="PHONE" onfocus="this.value = '';"
-                       onblur="if (this.value == '') {this.value = 'PHONE';}">
-                <input type="email" name="email" value="EMAIL ADDRESS" onfocus="this.value = '';"
-                       onblur="if (this.value == '') {this.value = 'EMAIL ADDRESS';}">
-                <input type="password" name="psw" value="PASSWORD" onfocus="this.value = '';"
+{#                <input type="email" name="email" value="EMAIL ADDRESS" onfocus="this.value = '';"#}
+{#                       onblur="if (this.value == '') {this.value = 'EMAIL ADDRESS';}">#}
+                <input type="password" name="password" value="PASSWORD" onfocus="this.value = '';"
                        onblur="if (this.value == '') {this.value = 'PASSWORD';}">
                 <input type="submit" class="register" value="注册">
             </form>

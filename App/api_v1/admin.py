@@ -31,11 +31,11 @@ def unauthorized_callback():
     return redirect('/login')
 
 
-@api_v1_app.route('/register')
+@api_v1_app.route('/register', methods=['GET', 'POST'])
 def register():
     session = Session()
-    username = request.values.get('username')
-    password = request.values.get('password')
+    username = request.form.get('username')
+    password = request.form.get('password')
     # TODO
     #  send email verify register
     account = Admin(username=username, password=hashlib.md5((password + settings.SECRET_KEY).encode()).hexdigest())
@@ -91,11 +91,8 @@ def index():
 
 
 @api_v1_app.route('/api/<slug>/', methods=['POST', 'GET'])
-# @login_required
+@login_required
 def service(slug):
-    session = Session()
-    account = session.query(Admin).first()
-    login_user(account, remember=True)
     res = service_view(slug)
     response = make_response(res)
 
