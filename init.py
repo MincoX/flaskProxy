@@ -15,7 +15,7 @@ def init_system():
     session = Session()
 
     perms = [
-        Perm(name='基础管理员', slug='base'),
+        Perm(name='基础用户', slug='base'),
         Perm(name='配置系统', slug='do_setting'),
         Perm(name='权限分配', slug='do_auth'),
     ]
