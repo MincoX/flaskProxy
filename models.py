@@ -29,6 +29,18 @@ rel_role_perm = Table(
     Column('perm_id', Integer, ForeignKey('perm.id'))
 )
 
+protocol_map = {
+    0: 'http',
+    1: 'https',
+    2: 'http/https'
+}
+
+nick_type_map = {
+    0: '高匿',
+    1: '匿名',
+    2: '透明'
+}
+
 
 class Role(Base):
     __tablename__ = 'role'

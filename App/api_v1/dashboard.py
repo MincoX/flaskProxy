@@ -27,7 +27,7 @@ def get_account_info(service):
 
 
 @ApiService
-def get_proxy_info(service):
+def get_store_info(service):
     """
     获取当前数据库中的代理信息
     :param service:
@@ -37,7 +37,18 @@ def get_proxy_info(service):
     #  可用代理数量，
     #  分数阀值，
     #  低于阀值的数量
-    pass
+    session = service.session
+    proxies = session.query(Proxy)
+    active_count = proxies.filter(Proxy.speed != -1).count()
+    total_count = proxies.count()
+    disable_count = proxies.filter(Proxy.speed == -1).count()
+
+    res = {
+        'status': 1,
+        'store_info': {'active_count': active_count, 'total_count': total_count, 'disable_count': disable_count},
+    }
+
+    return json.dumps(res)
 
 
 @ApiService
@@ -74,17 +85,20 @@ def get_line_chart(service):
     def get_count(l, r, n):
         return session.query(Proxy).filter(Proxy.create_time.between(l, r), Proxy.origin == n).count()
 
-    xicidaili = map(get_count, label, relabel, ['xicidaili'] * len(label))
+    ip66 = map(get_count, label, relabel, ['66ip'] * len(label))
     kuaidaili = map(get_count, label, relabel, ['kuaidaili'] * len(label))
     ip3366 = map(get_count, label, relabel, ['ip3366'] * len(label))
+    xicidaili = map(get_count, label, relabel, ['xicidaili'] * len(label))
 
     res = {
         'status': 1,
         'label': [l[5:] for l in label],
-        'xicidaili': list(xicidaili),
+        'ip66': list(ip66),
         'kuaidaili': list(kuaidaili),
         'ip3366': list(ip3366),
+        'xicidaili': list(xicidaili),
     }
+
 
     return json.dumps(res)
 
@@ -101,14 +115,14 @@ def get_total_active_scale(ser):
     proxies = session.query(Proxy).all()
 
     scale = {
-        'xici': f'{len([item for item in proxies if item.origin == "xicidaili" and item.speed != -1])} / {len([item for item in proxies if item.origin == "xicidaili"])}',
-        'xici_scale': f'{round(len([item for item in proxies if item.origin == "xicidaili" and item.speed != -1]) / len([item for item in proxies if item.origin == "xicidaili"]) * 100, 1)}%',
+        '66ip': f"{len([item for item in proxies if item.origin == '66ip' and item.speed != -1])} / {len([item for item in proxies if item.origin == '66ip'])}",
+        '66ip_scale': f'{round(len([item for item in proxies if item.origin == "66ip" and item.speed != -1]) / len([item for item in proxies if item.origin == "66ip"]) * 100, 1)}%',
         'kuaidaili': f"{len([item for item in proxies if item.origin == 'kuaidaili' and item.speed != -1])} / {len([item for item in proxies if item.origin == 'kuaidaili'])}",
         'kuaidaili_scale': f'{round(len([item for item in proxies if item.origin == "kuaidaili" and item.speed != -1]) / len([item for item in proxies if item.origin == "kuaidaili"]) * 100, 1)}%',
         'ip3366': f"{len([item for item in proxies if item.origin == 'ip3366' and item.speed != -1])} / {len([item for item in proxies if item.origin == 'ip3366'])}",
         'ip3366_scale': f'{round(len([item for item in proxies if item.origin == "ip3366" and item.speed != -1]) / len([item for item in proxies if item.origin == "ip3366"]) * 100, 1)}%',
-        '66ip': f"{len([item for item in proxies if item.origin == '66ip' and item.speed != -1])} / {len([item for item in proxies if item.origin == '66ip'])}",
-        '66ip_scale': f'{round(len([item for item in proxies if item.origin == "66ip" and item.speed != -1]) / len([item for item in proxies if item.origin == "66ip"]) * 100, 1)}%',
+        'xici': f'{len([item for item in proxies if item.origin == "xicidaili" and item.speed != -1])} / {len([item for item in proxies if item.origin == "xicidaili"])}',
+        'xici_scale': f'{round(len([item for item in proxies if item.origin == "xicidaili" and item.speed != -1]) / len([item for item in proxies if item.origin == "xicidaili"]) * 100, 1)}%'
     }
 
     res = {
@@ -141,7 +155,6 @@ def get_pie_chart(ser):
         'grouped': grouped
     }
 
-    logger.info(res)
 
     return json.dumps(res)
 

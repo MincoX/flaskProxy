@@ -132,7 +132,94 @@ def post_role_perms(ser):
     perms = session.query(Role).filter(Role.slug == slug).first().perms
     res = {
         'status': 1,
-        'perms': [object_to_dict(perm) for perm in perms]
+        'perms': [object_to_dict(perm) for perm in perms],
+    }
+
+    return json.dumps(res)
+
+
+@ApiService
+def post_set_perm(ser):
+    """
+    修改角色分配的权限
+    :param ser:
+    :return:
+    """
+    session = ser.session
+
+    role = session.query(Role).get(request.form.get('role_id'))
+    new_perms = json.loads(request.form.get('new_perms'))
+    role_perms = [object_to_dict(perm)['slug'] for perm in role.perms]
+
+    add_perms = [p['slug'] for p in new_perms if p.get('selected') is True and p['slug'] not in role_perms]
+    remove_perms = [p['slug'] for p in new_perms if p.get('selected') is False and p['slug'] in role_perms]
+
+    add_perms = session.query(Perm).filter(Perm.slug.in_(add_perms)).all()
+    for per in add_perms:
+        role.perms.append(per)
+
+    remove_perms = session.query(Perm).filter(Perm.slug.in_(remove_perms)).all()
+    for per in remove_perms:
+        role.perms.remove(per)
+
+    session.commit()
+
+    res = {
+        'status': 1,
+        'message': '权限配置成功'
+    }
+
+    return json.dumps(res)
+
+
+@ApiService
+def post_user_roles(ser):
+    """
+    获取用户所拥有的角色
+    :param ser:
+    :return:
+    """
+    session = ser.session
+
+    user = session.query(Admin).get(request.form.get('user_id'))
+    user_roles = [object_to_dict(role) for role in user.roles]
+
+    res = {
+        'status': 1,
+        'roles': user_roles,
+    }
+
+    return json.dumps(res)
+
+
+@ApiService
+def post_set_role(ser):
+    """
+    为用户设置角色
+    :param ser:
+    :return:
+    """
+    session = ser.session
+    user = session.query(Admin).get(request.form.get('user_id'))
+    new_roles = json.loads(request.form.get('new_roles'))
+    user_roles = [object_to_dict(role)['slug'] for role in user.roles]
+
+    add_roles = [p['slug'] for p in new_roles if p.get('selected') is True and p['slug'] not in user_roles]
+    remove_perms = [p['slug'] for p in new_roles if p.get('selected') is False and p['slug'] in user_roles]
+
+    add_roles = session.query(Role).filter(Role.slug.in_(add_roles)).all()
+    for per in add_roles:
+        user.roles.append(per)
+
+    remove_roles = session.query(Role).filter(Role.slug.in_(remove_perms)).all()
+    for per in remove_roles:
+        user.roles.remove(per)
+
+    session.commit()
+
+    res = {
+        'status': 1,
+        'message': '角色配置成功'
     }
 
     return json.dumps(res)

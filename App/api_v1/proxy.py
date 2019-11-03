@@ -4,7 +4,7 @@ from flask import request
 
 import settings
 from utils import logger
-from models import Proxy
+from models import protocol_map, nick_type_map, Proxy
 from utils.tools import object_to_dict
 from utils.api_service import ApiService
 from utils.proxy_check import check_proxy
@@ -25,6 +25,11 @@ def get_proxies(service, limit=5):
         'status': 1,
         'proxies': [object_to_dict(proxy) for proxy in proxies],
     }
+
+    for pro in res['proxies']:
+        pro['area'] = '未知' if pro['area'].startswith('\n') else pro['area']
+        pro['protocol'] = protocol_map[pro['protocol']]
+        pro['nick_type'] = nick_type_map[pro['nick_type']]
 
     return json.dumps(res)
 

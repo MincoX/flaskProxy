@@ -21,10 +21,11 @@ def get_user_info(ser):
 
     res = {
         'status': 1,
-        'user': [object_to_dict(user)]
+        'user_info': [object_to_dict(user)]
     }
 
-    logger.info(res)
+    del res['user_info'][0]['password']
+    del res['user_info'][0]['auth_key']
 
     return json.dumps(res)
 

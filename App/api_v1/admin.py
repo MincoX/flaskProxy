@@ -1,5 +1,6 @@
-import hashlib
 import json
+import hashlib
+from datetime import datetime
 
 from flask_wtf.csrf import generate_csrf
 from sqlalchemy.orm.exc import NoResultFound
@@ -8,7 +9,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 import settings
 from App import login_manager
-from models import Session, Admin
+from models import Session, Admin, AdminLoginLog
 from App.api_v1 import api_v1_app
 from utils.api_service import service_view
 
@@ -62,11 +63,25 @@ def login():
         if account:
             if account.password == hashlib.md5((password + settings.SECRET_KEY).encode()).hexdigest():
                 login_user(account, remember=True)
+                login_log = AdminLoginLog(
+                    admin_id=account.id,
+                    ip=request.environ.get('HTTP_FORWARDED_FOR', request.remote_addr),
+                    create_time=datetime.today(),
+                )
+                session.add(login_log)
+                session.commit()
+                session.close()
                 return redirect('index')
             else:
                 abort(403)
         else:
             return render_template('login.html', tip='account is not exist')
+
+
+@api_v1_app.route('/login_out')
+def login_out():
+    logout_user()
+    return redirect('/login/')
 
 
 @api_v1_app.route('/index')
