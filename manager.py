@@ -17,10 +17,10 @@ class FlaskServer:
         fs.run()
 
 
-# app = create_app('develop')
+app = create_app('develop')
 # manager = Manager(app)
 
 if __name__ == '__main__':
-    FlaskServer.start()
+    # FlaskServer.start()
     # manager.run()
-    # app.run()
+    app.run()
