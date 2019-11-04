@@ -14,7 +14,7 @@ from utils.proxy_check import check_proxy
 @permission_api_service(perms=['base'])
 def get_proxies(service, limit=5):
     """
-    获取高性能的代理展示与首页
+    获取高性能的代理展示于首页
     :param limit:
     :param service:
     :return:
