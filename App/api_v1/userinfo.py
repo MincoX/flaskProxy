@@ -26,8 +26,6 @@ def get_user_info(ser):
         # 'identity': user.roles[:-1][0].name
     }
 
-    logger.info(res)
-
     del res['user_info'][0]['password']
     del res['user_info'][0]['auth_key']
 
