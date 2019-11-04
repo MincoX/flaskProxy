@@ -99,7 +99,6 @@ def get_line_chart(service):
         'xicidaili': list(xicidaili),
     }
 
-
     return json.dumps(res)
 
 
@@ -154,7 +153,6 @@ def get_pie_chart(ser):
         ],
         'grouped': grouped
     }
-
 
     return json.dumps(res)
 
