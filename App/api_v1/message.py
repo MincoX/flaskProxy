@@ -104,9 +104,7 @@ def post_message_detail(ser):
     session = ser.session
     message_id = request.form.get('message_id')
 
-    logger.info(message_id)
     message = session.query(Message).filter(Message.id == message_id).first()
-    logger.info(message)
     res = {
         'status': 1,
         'message': object_to_dict(message),
