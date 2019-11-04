@@ -347,7 +347,7 @@ def post_toggle_active(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth', 'test'])
 def post_reset_password(ser):
     """
     重置密码
