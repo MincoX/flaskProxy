@@ -65,7 +65,7 @@ def permission_api_service(perms=None):
         def _wrapper(*args, **kwargs):
             if current_user.__tablename__ == 'admin':
                 if not check_perms(session, perms):
-                    abort(403)
+                    # abort(403)
                     return json.dumps({
                         'status': 0,
                         'message': '你的身份受限，操作失败！'
