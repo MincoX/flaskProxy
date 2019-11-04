@@ -80,7 +80,10 @@ def login():
 @api_v1_app.route('/login_out')
 def login_out():
     logout_user()
-    return redirect('/login')
+    res = {
+        'status': 1
+    }
+    return json.dumps(res)
 
 
 @api_v1_app.route('/index')
