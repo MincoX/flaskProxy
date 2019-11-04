@@ -13,7 +13,7 @@ from utils.api_service import ApiService, permission_api_service
 
 
 # @ApiService
-@permission_api_service(perms=['base', 'sess', 'ppp', '12546'])
+@permission_api_service(perms=['base'])
 def get_account_info(service):
     """
     获取当前账户信息
