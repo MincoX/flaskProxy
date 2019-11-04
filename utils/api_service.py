@@ -54,8 +54,6 @@ def check_perms(session, perms):
     current_admin = session.query(Admin).filter(Admin.id == current_user.id).one()
     perm_slugs = set([slug for slug, name in current_admin.get_perms()])
 
-    logger.info(perm_slugs >= set(perms))
-
     return perm_slugs >= set(perms)
 
 
@@ -97,14 +95,11 @@ def service_view(slug):
         module = importlib.import_module(f'App.api_v1.{module_name}')
         service_obj = getattr(module, f'get_{func_name}')
         ret = service_obj(**request.args.to_dict())
-
-        logger.info(ret)
     else:
         module = importlib.import_module(f'App.api_v1.{module_name}')
         service_obj = getattr(module, f'post_{func_name}')
 
         ret = service_obj(**request.args.to_dict())
-        logger.info(ret)
         # ret = service_obj(json.loads(request.data.decode('utf-8')))
 
     # 判断 api 接口是不是 ApiService 的实例（即 api 接口是不是添加了 ApiService 装饰器（因为后期会在装饰器中进行权限校验））
