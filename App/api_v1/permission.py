@@ -104,7 +104,7 @@ def post_add_perm(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
 def post_del_perm(ser):
     """
     删除权限
@@ -145,7 +145,7 @@ def post_role_perms(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
 def post_set_perm(ser):
     """
     修改角色分配的权限
@@ -201,7 +201,7 @@ def post_user_roles(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
 def post_set_role(ser):
     """
     为用户设置角色
@@ -266,7 +266,7 @@ def post_add_role(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
 def post_del_role(ser):
     """
     删除角色
@@ -288,7 +288,7 @@ def post_del_role(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
 def post_add_admin(ser):
     """
     添加管理员
@@ -321,7 +321,7 @@ def post_add_admin(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
 def post_toggle_active(ser):
     """
     账户激活状态切换
@@ -347,7 +347,7 @@ def post_toggle_active(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
 def post_reset_password(ser):
     """
     重置密码
