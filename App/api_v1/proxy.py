@@ -83,11 +83,15 @@ def post_check(service):
         else:
             return '较慢'
 
-    logger.info(res)
-
-    res['area'] = '未知' if res['area'].startswith('\n') else res['area']
-    res['protocol'] = protocol_map[res['protocol']]
-    res['nick_type'] = nick_type_map[res['nick_type']]
-    res['speed'] = get_speed_map(res['speed'])
+    res = {
+        'status': 1,
+        'ip': res['ip'],
+        'port': res['port'],
+        'origin': res['origin'],
+        'area': '未知' if res['area'].startswith('\n') else res['area'],
+        'protocol': protocol_map[res['protocol']],
+        'nick_type': nick_type_map[res['nick_type']],
+        'speed': get_speed_map(res['speed'])
+    }
 
     return json.dumps(res)

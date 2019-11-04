@@ -24,7 +24,7 @@
             <form action="/login" method="post">
 {#                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">#}
                 <input type="text" name="username" value="USERNAME" onfocus="this.value = '';"
-                       onblur="if (this.value == '') {this.value = '用户名';}">
+                       onblur="if (this.value == '') {this.value = '用户名';}" autocomplete="off">
                 <input type="password" name="password" value="PASSWORD" onfocus="this.value = '';"
                        onblur="if (this.value == '') {this.value = '密码';}">
 
@@ -48,7 +48,7 @@
 
             <form action="/register" method="post">
                 <input type="text" name="username" value="USERNAME" onfocus="this.value = '';"
-                       onblur="if (this.value == '') {this.value = 'NAME AND SURNAME';}">
+                       onblur="if (this.value == '') {this.value = 'NAME AND SURNAME';}" autocomplete="off">
 {#                <input type="email" name="email" value="EMAIL ADDRESS" onfocus="this.value = '';"#}
 {#                       onblur="if (this.value == '') {this.value = 'EMAIL ADDRESS';}">#}
                 <input type="password" name="password" value="PASSWORD" onfocus="this.value = '';"
