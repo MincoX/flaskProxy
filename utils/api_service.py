@@ -68,10 +68,10 @@ def permission_api_service(perms=None):
             if current_user.__tablename__ == 'admin':
                 if not check_perms(session, perms):
                     abort(403)
-                    # return json.dumps({
-                    #     'status': 0,
-                    #     'message': '没有权限'
-                    # })
+                    return json.dumps({
+                        'status': 0,
+                        'message': '没有权限'
+                    })
             # if current_user.__tablename__ == 'account':
             #     # perms is not None and perms unequal to base
             #     if not (perms == ['base'] or perms is None):
