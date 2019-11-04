@@ -6,10 +6,11 @@ from flask_login import current_user
 from utils import logger
 from models import Proxy, Admin, Message
 from utils.tools import object_to_dict
-from utils.api_service import ApiService
+from utils.api_service import ApiService, permission_api_service
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_publish(ser):
     """
     发布留言
@@ -39,7 +40,8 @@ def post_publish(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_announcement_message(ser):
     """
     获取公告信息
@@ -60,7 +62,8 @@ def get_announcement_message(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_all_message(ser):
     """
     获取所有的留言
@@ -89,7 +92,8 @@ def get_all_message(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_message_detail(ser):
     """
     获取留言详情
@@ -116,7 +120,8 @@ def post_message_detail(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_my_message(ser):
     """
     获取用户的留言列表

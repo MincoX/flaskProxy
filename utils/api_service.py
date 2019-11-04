@@ -5,9 +5,10 @@ import traceback
 import importlib
 
 from flask import request, abort
+from flask_login import current_user
 
 from utils import logger
-from models import Session, Proxy
+from models import Session, Proxy, Admin
 
 
 class Service:
@@ -43,6 +44,52 @@ class ApiService:
         return self.func_decorate(*args, **kwargs)
 
 
+def check_perms(session, perms):
+    if not perms:
+        perms = ['base']
+
+    if current_user.__tablename__ != 'admin':
+        abort(403)
+
+    current_admin = session.query(Admin).filter(Admin.id == current_user.id).one()
+    perm_slugs = set([slug for slug, name in current_admin.get_perms()])
+
+    logger.info(perm_slugs >= set(perms))
+
+    return perm_slugs >= set(perms)
+
+
+def permission_api_service(perms=None):
+    session = Session()
+
+    def func_wrapper(func):
+
+        def _wrapper(*args, **kwargs):
+            if current_user.__tablename__ == 'admin':
+                if not check_perms(session, perms):
+                    abort(403)
+                    # return json.dumps({
+                    #     'status': 0,
+                    #     'message': '没有权限'
+                    # })
+            # if current_user.__tablename__ == 'account':
+            #     # perms is not None and perms unequal to base
+            #     if not (perms == ['base'] or perms is None):
+            #         abort(403)
+            try:
+                serve = Service(session)
+                return func(serve, *args, **kwargs)
+            except Exception as e:
+                logger.error(e)
+                logging.error(traceback.format_exc())
+            finally:
+                session.close()
+
+        return _wrapper
+
+    return func_wrapper
+
+
 def service_view(slug):
     module_name, func_name = slug.split('.')
 
@@ -50,11 +97,14 @@ def service_view(slug):
         module = importlib.import_module(f'App.api_v1.{module_name}')
         service_obj = getattr(module, f'get_{func_name}')
         ret = service_obj(**request.args.to_dict())
+
+        logger.info(ret)
     else:
         module = importlib.import_module(f'App.api_v1.{module_name}')
         service_obj = getattr(module, f'post_{func_name}')
 
         ret = service_obj(**request.args.to_dict())
+        logger.info(ret)
         # ret = service_obj(json.loads(request.data.decode('utf-8')))
 
     # 判断 api 接口是不是 ApiService 的实例（即 api 接口是不是添加了 ApiService 装饰器（因为后期会在装饰器中进行权限校验））

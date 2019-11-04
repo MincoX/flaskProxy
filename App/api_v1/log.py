@@ -9,10 +9,11 @@ import settings
 from utils import logger
 from models import Admin, Proxy, AdminLoginLog
 from utils.tools import object_to_dict, hour_range
-from utils.api_service import ApiService
+from utils.api_service import ApiService, permission_api_service
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_login_log(ser):
     """
     获取登录日志

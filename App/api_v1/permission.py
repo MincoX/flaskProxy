@@ -7,10 +7,11 @@ import settings
 from utils import logger
 from models import Perm, Role, Admin
 from utils.tools import object_to_dict
-from utils.api_service import ApiService
+from utils.api_service import ApiService, permission_api_service
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_perms(ser):
     """
     获取数据库中的所有权限
@@ -23,7 +24,8 @@ def get_perms(ser):
     return json.dumps(perms)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_roles(ser):
     """
     获取数据库中的所有角色
@@ -45,7 +47,8 @@ def get_roles(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_admins(ser):
     """
     获取管理员分配的角色情况
@@ -68,7 +71,8 @@ def get_admins(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_add_perm(ser):
     """
     添加权限
@@ -99,7 +103,8 @@ def post_add_perm(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_del_perm(ser):
     """
     删除权限
@@ -120,7 +125,8 @@ def post_del_perm(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_role_perms(ser):
     """
     获取角色对应的权限
@@ -138,7 +144,8 @@ def post_role_perms(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_set_perm(ser):
     """
     修改角色分配的权限
@@ -172,7 +179,8 @@ def post_set_perm(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_user_roles(ser):
     """
     获取用户所拥有的角色
@@ -192,7 +200,8 @@ def post_user_roles(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_set_role(ser):
     """
     为用户设置角色
@@ -225,7 +234,8 @@ def post_set_role(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_add_role(ser):
     """
     添加角色
@@ -255,7 +265,8 @@ def post_add_role(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_del_role(ser):
     """
     删除角色
@@ -276,7 +287,8 @@ def post_del_role(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_add_admin(ser):
     """
     添加管理员
@@ -308,7 +320,8 @@ def post_add_admin(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_toggle_active(ser):
     """
     账户激活状态切换
@@ -333,7 +346,8 @@ def post_toggle_active(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_reset_password(ser):
     """
     重置密码

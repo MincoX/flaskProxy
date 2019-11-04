@@ -6,11 +6,12 @@ import settings
 from utils import logger
 from models import protocol_map, nick_type_map, Proxy
 from utils.tools import object_to_dict
-from utils.api_service import ApiService
+from utils.api_service import ApiService, permission_api_service
 from utils.proxy_check import check_proxy
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_proxies(service, limit=5):
     """
     获取高性能的代理展示与首页
@@ -47,7 +48,8 @@ def get_proxies(service, limit=5):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def post_check(service):
     """
     测试代理

@@ -90,6 +90,13 @@ class Admin(Base):
     def get_id(self):
         return self.id
 
+    def get_perms(self):
+        perms = []
+        for role in self.roles:
+            for perm in role.perms:
+                perms.append((perm.slug, perm.name))
+        return list(set(perms))
+
     def __repr__(self):
         return f'{self.id}:{self.username}'
 
@@ -150,5 +157,3 @@ def drop_db():
 if __name__ == '__main__':
     # drop_db()
     init_db()
-
-

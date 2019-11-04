@@ -9,10 +9,11 @@ import settings
 from utils import logger
 from models import Admin, Proxy
 from utils.tools import object_to_dict, hour_range
-from utils.api_service import ApiService
+from utils.api_service import ApiService, permission_api_service
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_account_info(service):
     """
     获取当前账户信息
@@ -26,7 +27,8 @@ def get_account_info(service):
     return res_dict
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_store_info(service):
     """
     获取当前数据库中的代理信息
@@ -51,7 +53,8 @@ def get_store_info(service):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_navigate(service):
     """
     获取首页的左侧导航栏
@@ -67,7 +70,8 @@ def get_navigate(service):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_line_chart(service):
     """
     获取近期爬虫曲线图
@@ -102,7 +106,8 @@ def get_line_chart(service):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_total_active_scale(ser):
     """
     获取活跃量和总量的比例
@@ -132,7 +137,8 @@ def get_total_active_scale(ser):
     return json.dumps(res)
 
 
-@ApiService
+# @ApiService
+@permission_api_service(perms=['base'])
 def get_pie_chart(ser):
     """
     获取饼状图数据
