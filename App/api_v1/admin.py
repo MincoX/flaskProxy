@@ -78,6 +78,7 @@ def login():
 
 
 @api_v1_app.route('/login_out')
+@login_required
 def login_out():
     logout_user()
     res = {
