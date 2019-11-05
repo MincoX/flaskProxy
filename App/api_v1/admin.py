@@ -62,7 +62,7 @@ def login():
                 login_user(account)
                 login_log = AdminLoginLog(
                     admin_id=account.id,
-                    ip=request.environ.get('HTTP_FORWARDED_FOR', request.remote_addr),
+                    ip=request.environ.get('X-real-ip', request.remote_addr),
                     create_time=datetime.datetime.now(),
                 )
                 session.add(login_log)
