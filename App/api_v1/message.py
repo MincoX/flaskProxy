@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from flask import request
 from flask_login import current_user
@@ -25,7 +26,8 @@ def post_publish(ser):
     message = Message(
         title=title,
         content=content,
-        admin_id=account.id
+        admin_id=account.id,
+        create_time=datetime.now()
     )
 
     session.add(message)
