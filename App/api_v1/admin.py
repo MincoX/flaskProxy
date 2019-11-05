@@ -88,7 +88,7 @@ def login_out():
 
 
 @api_v1_app.route('/index')
-@login_required
+# @login_required
 def index():
     return api_v1_app.send_static_file('index.html')
 
