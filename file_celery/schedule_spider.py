@@ -1,4 +1,5 @@
 import importlib
+from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
 from . import logger
@@ -65,7 +66,8 @@ class RunSpider:
                             area=str(proxy.area),
                             score=proxy.score,
                             disable_domain=proxy.disable_domain,
-                            origin=str(proxy.origin)
+                            origin=str(proxy.origin),
+                            create_time=datetime.now()
                         )
                         session.add(obj)
                         session.commit()
