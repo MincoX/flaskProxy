@@ -59,7 +59,7 @@ def login():
         account = session.query(Admin).filter(Admin.username == username).first()
         if account:
             if account.password == hashlib.md5((password + settings.SECRET_KEY).encode()).hexdigest():
-                login_user(account, remember=True)
+                login_user(account)
                 login_log = AdminLoginLog(
                     admin_id=account.id,
                     ip=request.environ.get('HTTP_FORWARDED_FOR', request.remote_addr),
