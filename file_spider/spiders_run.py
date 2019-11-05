@@ -6,6 +6,7 @@ monkey.patch_all()
 import time
 import importlib
 import schedule
+from datetime import datetime
 
 import settings
 from models import Session, Proxy
@@ -70,7 +71,8 @@ class RunSpider:
                             area=str(proxy.area),
                             score=proxy.score,
                             disable_domain=proxy.disable_domain,
-                            origin=str(proxy.origin)
+                            origin=str(proxy.origin),
+                            create_time=datetime.now()
                         )
                         logger.info(obj)
                         session.add(obj)
