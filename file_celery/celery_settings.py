@@ -28,7 +28,7 @@ beat_schedule = {
 
     'check': {
         'task': 'Proxy_Server.file_celery.schedule_check.schedule_check',
-        'schedule': crontab(minute=0, hour='*/2'),
+        'schedule': crontab(minute=0, hour='*/3'),
         'args': (),
     },
 
