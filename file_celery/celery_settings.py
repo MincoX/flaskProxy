@@ -22,13 +22,13 @@ beat_schedule = {
 
     'spider': {
         'task': 'Proxy_Server.file_celery.schedule_spider.schedule_spider',
-        'schedule': crontab(minute=0, hour='*/2'),
+        'schedule': crontab(minute=0, hour='*/1'),
         'args': (),
     },
 
     'check': {
         'task': 'Proxy_Server.file_celery.schedule_check.schedule_check',
-        'schedule': crontab(minute=0, hour='*/1'),
+        'schedule': crontab(minute=0, hour='*/2'),
         'args': (),
     },
 
