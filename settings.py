@@ -8,6 +8,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'Proxy_Server'))
 SECRET_KEY = 'ip_pool_flask_server'
 ADMIN_NAME = 'MincoX'
 ADMIN_PASSWORD = 'mincoroot'
+UPLOAD_FOLDER = 'App/static/upload/'
 
 
 # ################################## flask config ##################################

@@ -74,6 +74,9 @@ class Admin(Base):
     active = Column(Boolean, default=True)
     header = Column(LargeBinary, nullable=True)
     auth_key = Column(String(256), default='')
+    birthday = Column(DateTime(timezone=True), nullable=True)
+    address = Column(String(128), nullable=True, default='')
+    personality = Column(String(256), nullable=True, default='')
     create_time = Column(DateTime(timezone=True), default=func.now())
 
     roles = relationship('Role', secondary=rel_admin_role, back_populates='admins')

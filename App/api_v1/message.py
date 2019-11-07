@@ -1,9 +1,12 @@
+import os
 import json
 from datetime import datetime
 
 from flask import request
 from flask_login import current_user
+from werkzeug.utils import secure_filename
 
+import settings
 from utils import logger
 from models import Proxy, Admin, Message
 from utils.tools import object_to_dict
@@ -144,6 +147,26 @@ def get_my_message(ser):
             }
             for per_message in messages
         ]
+    }
+
+    return json.dumps(res)
+
+
+@permission_api_service(perms=['base'])
+def post_upload_img(ser):
+    """
+    上传图片
+    :return:
+    """
+    file = request.files.get('file')
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(settings.UPLOAD_FOLDER, filename))
+
+    res = {
+        'status': 1,
+        'uploaded': 1,
+        'fileName': f'{filename}',
+        'url': f'App/static/upload/{filename}',
     }
 
     return json.dumps(res)
