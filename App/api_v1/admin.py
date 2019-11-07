@@ -94,11 +94,12 @@ def index():
 
 
 @api_v1_app.route('/api/<slug>/', methods=['POST', 'GET'])
-@login_required
+# @login_required
 def service(slug):
-    # session = Session()
-    # account = session.query(Admin).filter(Admin.username == 'Test').first()
-    # login_user(account, remember=True)
+    session = Session()
+    account = session.query(Admin).filter(Admin.username == 'MincoX').first()
+    login_user(account, remember=True)
+
     res = service_view(slug)
     response = make_response(res)
 

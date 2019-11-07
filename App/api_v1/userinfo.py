@@ -9,7 +9,7 @@ from utils.tools import object_to_dict, hour_range
 from utils.api_service import ApiService, permission_api_service
 
 
-# @ApiService
+# # @ApiService
 @permission_api_service(perms=['base'])
 def get_user_info(ser):
     """
@@ -23,11 +23,12 @@ def get_user_info(ser):
     res = {
         'status': 1,
         'user_info': [object_to_dict(user)],
-        # 'identity': user.roles[:-1][0].name
+        'identity': sorted([(role.slug, role.name) for role in user.roles], key=lambda x: x[0], reverse=True)[0][1]
     }
 
     del res['user_info'][0]['password']
-    del res['user_info'][0]['auth_key']
+
+    logger.info(res)
 
     return json.dumps(res)
 
