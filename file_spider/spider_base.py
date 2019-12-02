@@ -97,6 +97,10 @@ class BaseSpider:
             yield proxy
 
     def get_proxies(self):
+        """
+        使用携程池方式爬取，程序入口为 main.py
+        :return:
+        """
         for url in self.urls:
             origin = re.match(r'.*//.*?\.(.*?)\..*', url).group(1)
 

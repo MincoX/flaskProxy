@@ -10,8 +10,6 @@ from utils.proxy_check import check_proxy
 
 
 class RunSpider:
-    def __init__(self):
-        self.pool = ThreadPoolExecutor(max_workers=4)
 
     def get_spider_obj_from_settings(self):
         """
@@ -40,8 +38,8 @@ class RunSpider:
                 proxy = check_proxy(proxy)
                 if proxy.speed != -1:
                     session = Session()
-                    exist = session.query(Proxy)\
-                        .filter(Proxy.ip == str(proxy.ip), Proxy.port == str(proxy.port))\
+                    exist = session.query(Proxy) \
+                        .filter(Proxy.ip == str(proxy.ip), Proxy.port == str(proxy.port)) \
                         .first()
 
                     if not exist:
@@ -77,14 +75,19 @@ class RunSpider:
                 else:
                     logger.debug(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
 
+            logger.info(f'>>> {spider.__name__} 线程执行结束!')
+
         except Exception as e:
             logger.error(f'scrapy error: {e}')
 
     def run(self):
         spiders = self.get_spider_obj_from_settings()
 
-        for spider in spiders:
-            self.pool.submit(self.__execute_one_spider_task, spider)
+        with ThreadPoolExecutor(max_workers=4) as t:  # 创建一个最大容纳数量为 4 的线程池
+
+            # 通过submit提交执行的函数到线程池中
+            for spider in spiders:
+                t.submit(self.__execute_one_spider_task, spider)
 
     @classmethod
     def start(cls):
