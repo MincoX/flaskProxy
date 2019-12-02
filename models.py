@@ -7,7 +7,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, JSON, Tabl
 import settings
 
 engine = create_engine(
-    "mysql+mysqlconnector://root:root@127.0.0.1:3306/proxy_server",
+    "mysql+mysqlconnector://root:root@49.232.19.51:33061/proxy_server",
     max_overflow=0,  # 超过连接池大小外最多创建的连接
     pool_size=200,  # 连接池大小
     pool_timeout=10,  # 连接池中没有已建立的连接时，新建立 http 连接最多等待的时间

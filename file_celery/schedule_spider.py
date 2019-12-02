@@ -108,4 +108,3 @@ def schedule_spider():
 
 if __name__ == '__main__':
     RunSpider.start()
-# celery worker -A Proxy_Server --loglevel=info --pool=solo
