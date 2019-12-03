@@ -34,4 +34,4 @@ L          request time in decimal seconds
 p          process ID
 """
 access_log = "/usr/src/Proxy_Server/logs/gunicorn_access.log"  # 访问日志文件
-error_log = "/usr/src/Proxy_Server/Proxy_Server/logs/gunicorn_error.log"  # 错误日志文件
+error_log = "/usr/src/Proxy_Server/logs/gunicorn_error.log"  # 错误日志文件
