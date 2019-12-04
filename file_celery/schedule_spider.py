@@ -1,3 +1,4 @@
+import time
 import importlib
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
@@ -33,6 +34,8 @@ class RunSpider:
         :param spider:
         :return:
         """
+        start_time = time.time()
+        logger.info(f'>>> {type(spider).__name__} 线程开始执行!')
         try:
             for proxy in spider.get_proxies():
                 proxy = check_proxy(proxy)
@@ -74,8 +77,8 @@ class RunSpider:
                         logger.info(f' already exist {proxy.ip}:{proxy.port}, update successfully')
                 else:
                     logger.debug(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
-
-            logger.info(f'>>> {type(spider).__name__} 线程执行结束!')
+            end_time = time.time()
+            logger.info(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {start_time - end_time} 秒。')
 
         except Exception as e:
             logger.error(f'spider: {type(spider).__name__}, error: {e}')

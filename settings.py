@@ -77,12 +77,11 @@ MAX_SCORE = 20
 
 # 设置爬虫运行的时间间隔， 单位为小时
 RUN_SPIDERS_INTERVAL = 4
+# 配置检测代理 ip 的时间间隔, 单位小时
+TEST_PROXIES_INTERVAL = 4
 
 # 配置检测代理 ip, 开启的异步数量
 TEST_PROXIES_ASYNC_COUNT = 6
-
-# 配置检测代理 ip 的时间间隔, 单位小时
-TEST_PROXIES_INTERVAL = 2
 
 # 配置获取最大代理 ip 的数量， 值越小可用性越高，但是随机性差
 PROXIES_MAX_COUNT = 10
