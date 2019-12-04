@@ -75,10 +75,10 @@ class RunSpider:
                 else:
                     logger.debug(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
 
-            logger.info(f'>>> {spider.__name__} 线程执行结束!')
+            logger.info(f'>>> {type(spider).__name__} 线程执行结束!')
 
         except Exception as e:
-            logger.error(f'scrapy error: {e}')
+            logger.error(f'spider: {type(spider).__name__}, error: {e}')
 
     def run(self):
         spiders = self.get_spider_obj_from_settings()
