@@ -1,4 +1,5 @@
 import time
+import threading
 import importlib
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
@@ -78,7 +79,8 @@ class RunSpider:
                 else:
                     logger.debug(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
             end_time = time.time()
-            logger.info(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {start_time - end_time} 秒。')
+            logger.info(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {end_time - start_time} 秒,'
+                        f' 剩余线程 {threading.activeCount()} 个。')
 
         except Exception as e:
             logger.error(f'spider: {type(spider).__name__}, error: {e}')
