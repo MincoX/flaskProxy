@@ -122,8 +122,13 @@ def get_total_active_scale(ser):
     :return:
     """
     session = ser.session
+    filter_date = request.data.get('filter_date')
 
-    proxies = session.query(Proxy).all()
+    if filter_date:
+        filter_date = datetime.strptime(filter_date, '%Y-%m-%d')
+        proxies = session.query(Proxy).filter(cast(Proxy.create_time, DATE) == filter_date).all()
+    else:
+        proxies = session.query(Proxy).all()
 
     scale = {
         '66ip': f"{len([item for item in proxies if item.origin == '66ip' and item.speed != -1])} / {len([item for item in proxies if item.origin == '66ip'])}",
