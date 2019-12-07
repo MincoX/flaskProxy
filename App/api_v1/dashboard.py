@@ -79,7 +79,7 @@ def get_line_chart(service):
     :return:
     """
     session = service.session
-    filter_date = request.data.get('filter_date')
+    filter_date = request.form.get('filter_date')
 
     if filter_date:
         filter_date = datetime.strptime(filter_date + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
@@ -122,7 +122,7 @@ def get_total_active_scale(ser):
     :return:
     """
     session = ser.session
-    filter_date = request.data.get('filter_date')
+    filter_date = request.form.get('filter_date')
 
     if filter_date:
         filter_date = datetime.strptime(filter_date, '%Y-%m-%d')
