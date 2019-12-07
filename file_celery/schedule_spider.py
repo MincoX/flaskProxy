@@ -79,8 +79,9 @@ class RunSpider:
                 else:
                     logger.debug(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
             end_time = time.time()
-            logger.info(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {end_time - start_time} 秒,'
-                        f' 剩余线程 {threading.activeCount()} 个。')
+            m, s = divmod(end_time - start_time, 60)
+            logger.info(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {m} 分 {s} 秒,'
+                        f' 剩余线程 {threading.activeCount() - 1} 个。')
 
         except Exception as e:
             logger.error(f'spider: {type(spider).__name__}, error: {e}')
@@ -92,7 +93,8 @@ class RunSpider:
 
             # 通过submit提交执行的函数到线程池中
             for spider in spiders:
-                t.submit(self.__execute_one_spider_task, spider)
+                logger.info(f'{type(spider).__name__} 线程开启之前运行状态为 {type(spider).__name__.isAlive()}。')
+                type(spider).__name__ = t.submit(self.__execute_one_spider_task, spider)
 
     @classmethod
     def start(cls):
