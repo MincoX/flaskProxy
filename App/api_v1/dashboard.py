@@ -79,9 +79,16 @@ def get_line_chart(service):
     :return:
     """
     session = service.session
+    filter_date = request.data.get('filter_date')
 
-    lt = session.query(Proxy).order_by(Proxy.create_time.desc()).first().create_time
-    bt = lt + timedelta(days=-1)
+    if filter_date:
+        filter_date = datetime.strptime(filter_date + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
+        lt = filter_date + timedelta(days=1)
+        bt = filter_date
+    else:
+        lt = session.query(Proxy).order_by(Proxy.create_time.desc()).first().create_time
+        bt = lt + timedelta(days=-1)
+
     label = hour_range(bt.strftime("%Y-%m-%d %H"), lt.strftime("%Y-%m-%d %H"))[::3]
     label = [per + ':00' for per in label]
     relabel = label[1:] + [(lt + timedelta(hours=1)).strftime("%Y-%m-%d %H") + ':00']
