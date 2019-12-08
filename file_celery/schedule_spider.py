@@ -93,7 +93,6 @@ class RunSpider:
 
             # 通过submit提交执行的函数到线程池中
             for spider in spiders:
-                logger.info(f'{type(spider).__name__} 线程开启之前运行状态为 {type(spider).__name__.isAlive()}。')
                 type(spider).__name__ = t.submit(self.__execute_one_spider_task, spider)
 
     @classmethod
