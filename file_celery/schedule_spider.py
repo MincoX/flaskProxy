@@ -1,14 +1,17 @@
 import time
+import logging
 import threading
 import importlib
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
-from . import logger
-from .. import settings
-from .. import celery_app
-from ..models import Session, Proxy
+import settings
+from celery_app import celery_app
+from models import Session, Proxy
 from utils.proxy_check import check_proxy
+
+logger = logging.getLogger()
+logger.setLevel('DEBUG')
 
 
 class RunSpider:
