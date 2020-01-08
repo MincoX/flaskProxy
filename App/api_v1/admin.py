@@ -104,3 +104,12 @@ def service(slug):
     response = make_response(res)
 
     return response
+
+
+@api_v1_app.route('/socket_io')
+def socket_io_api():
+    """
+    socket io page
+    :return:
+    """
+    return render_template('socket_io.html')
