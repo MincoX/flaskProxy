@@ -21,8 +21,8 @@ import schedule
 from queue import Queue
 
 import settings
-from models import Session, Proxy
 from utils import logger
+from models import Session, Proxy
 from utils.proxy_check import check_proxy
 
 
@@ -54,14 +54,14 @@ class ProxyCheck:
             proxy.score['score'] -= proxy.score['power']
             session.add(proxy)
 
-            logger.debug('decrease {}:{} score from {} to {}'.format(
+            logger.info('decrease {}:{} score from {} to {}'.format(
                 proxy.ip, proxy.port, proxy.score['score'] + proxy.score['power'], proxy.score['score']
             ))
 
             # 如果分数已经为 0 了，直接删除
             if proxy.score['score'] <= 0:
                 session.delete(session.query(Proxy).filter(Proxy.ip == proxy.ip).first())
-                logger.info(f'delete: {proxy.ip}:{proxy.port} score 0')
+                logger.warning(f'delete: {proxy.ip}:{proxy.port} score 0')
         else:
             proxy.score['power'] = 0
             if not proxy.score['score'] == settings.MAX_SCORE:

@@ -6,12 +6,10 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
 import settings
+from utils import logger
 from celery_app import celery_app
 from models import Session, Proxy
 from utils.proxy_check import check_proxy
-
-logger = logging.getLogger()
-logger.setLevel('DEBUG')
 
 
 class RunSpider:
@@ -65,7 +63,7 @@ class RunSpider:
                         session.add(obj)
                         session.commit()
                         session.close()
-                        logger.info(f' insert: {proxy.ip}:{proxy.port} from {proxy.origin}')
+                        logger.warning(f' insert: {proxy.ip}:{proxy.port} from {proxy.origin}')
                     else:
                         exist.score['score'] = settings.MAX_SCORE
                         exist.score['power'] = 0
@@ -83,7 +81,7 @@ class RunSpider:
                     logger.debug(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
             end_time = time.time()
             m, s = divmod(end_time - start_time, 60)
-            logger.info(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {m} 分 {s} 秒,'
+            logger.warning(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {m} 分 {s} 秒,'
                         f' 剩余线程 {threading.activeCount() - 1} 个。')
 
         except Exception as e:

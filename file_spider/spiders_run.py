@@ -9,8 +9,8 @@ import schedule
 from datetime import datetime
 
 import settings
-from models import Session, Proxy
 from utils import logger
+from models import Session, Proxy
 from utils.proxy_check import check_proxy
 
 
@@ -57,8 +57,8 @@ class RunSpider:
                 # 如果 speed 不为 -1 说明可用，则保存到数据库中
                 if proxy.speed != -1:
                     session = Session()
-                    exist = session.query(Proxy)\
-                        .filter(Proxy.ip == str(proxy.ip), Proxy.port == str(proxy.port))\
+                    exist = session.query(Proxy) \
+                        .filter(Proxy.ip == str(proxy.ip), Proxy.port == str(proxy.port)) \
                         .first()
 
                     if not exist:
@@ -74,11 +74,10 @@ class RunSpider:
                             origin=str(proxy.origin),
                             create_time=datetime.now()
                         )
-                        logger.info(obj)
                         session.add(obj)
                         session.commit()
                         session.close()
-                        logger.info(f' insert: {proxy.ip}:{proxy.port} from {proxy.origin}')
+                        logger.warning(f' insert: {proxy.ip}:{proxy.port} from {proxy.origin}')
                     else:
                         exist.score['score'] = settings.MAX_SCORE
                         exist.score['power'] = 0
