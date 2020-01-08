@@ -5,11 +5,13 @@ from flask_session import Session
 from flask_wtf import CSRFProtect
 from flask_cors import *  # 跨域包
 from flask_login import LoginManager
+from flask_socketio import SocketIO
 
 from settings import config_map
 
 redis_store = None
 login_manager = None
+socket_io = None
 
 
 def create_app(config_name):
@@ -46,4 +48,8 @@ def create_app(config_name):
     from App.api_v1 import api_v1_app
     app.register_blueprint(api_v1_app)
 
-    return app
+    global socket_io
+    socket_io = SocketIO()
+    socket_io.init_app(app)
+
+    return app, socket_io
