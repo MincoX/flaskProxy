@@ -46,11 +46,20 @@ def register():
     return redirect('/')
 
 
+@api_v1_app.route('/socket_io', methods=['GET'])
+def socket_io_api():
+    """
+    socket io page
+    :return:
+    """
+    return render_template('socket_io.html')
+
+
 @api_v1_app.route('/')
 @api_v1_app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('socket_io.html')
     else:
         session = Session()
         username = request.form.get('username')
@@ -104,12 +113,3 @@ def service(slug):
     response = make_response(res)
 
     return response
-
-
-@api_v1_app.route('/socket_io')
-def socket_io_api():
-    """
-    socket io page
-    :return:
-    """
-    return render_template('socket_io.html')
