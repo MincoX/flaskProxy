@@ -74,5 +74,5 @@ def background_thread():
 #
 #         socket_io.sleep(10)
 
-
-socket_io.run(app)
+if __name__ == '__main__':
+    socket_io.run(app)
