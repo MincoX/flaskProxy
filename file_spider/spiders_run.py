@@ -90,9 +90,9 @@ class RunSpider:
                         exist.origin = proxy.origin
                         session.commit()
                         session.close()
-                        logger.info(f' already exist {proxy.ip}:{proxy.port}, update successfully')
+                        logger.warning(f' already exist {proxy.ip}:{proxy.port}, update successfully')
                 else:
-                    logger.debug(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
+                    logger.info(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
 
         except Exception as e:
             logger.error(f'scrapy error: {e}')

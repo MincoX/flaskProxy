@@ -37,7 +37,7 @@ class RunSpider:
         :return:
         """
         start_time = time.time()
-        logger.info(f'>>> {type(spider).__name__} 线程开始执行!')
+        logger.warning(f'>>> {type(spider).__name__} 线程开始执行!')
         try:
             for proxy in spider.get_proxies():
                 proxy = check_proxy(proxy)
@@ -76,13 +76,13 @@ class RunSpider:
                         exist.origin = proxy.origin
                         session.commit()
                         session.close()
-                        logger.info(f' already exist {proxy.ip}:{proxy.port}, update successfully')
+                        logger.warning(f' already exist {proxy.ip}:{proxy.port}, update successfully')
                 else:
-                    logger.debug(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
+                    logger.info(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
             end_time = time.time()
             m, s = divmod(end_time - start_time, 60)
             logger.warning(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {m} 分 {s} 秒,'
-                        f' 剩余线程 {threading.activeCount() - 1} 个。')
+                           f' 剩余线程 {threading.activeCount() - 1} 个。')
 
         except Exception as e:
             logger.error(f'spider: {type(spider).__name__}, error: {e}')

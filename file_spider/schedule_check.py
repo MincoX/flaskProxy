@@ -54,7 +54,7 @@ class ProxyCheck:
             proxy.score['score'] -= proxy.score['power']
             session.add(proxy)
 
-            logger.info('decrease {}:{} score from {} to {}'.format(
+            logger.warning('decrease {}:{} score from {} to {}'.format(
                 proxy.ip, proxy.port, proxy.score['score'] + proxy.score['power'], proxy.score['score']
             ))
 
@@ -67,7 +67,7 @@ class ProxyCheck:
             if not proxy.score['score'] == settings.MAX_SCORE:
                 # 如果代理可用就将该代理的分数增加到最大
                 proxy.score['score'] = settings.MAX_SCORE
-                logger.info(f'update: {proxy.ip}:{proxy.port} score {settings.MAX_SCORE}')
+                logger.warning(f'update: {proxy.ip}:{proxy.port} score {settings.MAX_SCORE}')
 
         session.commit()
         session.close()
