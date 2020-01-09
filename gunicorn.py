@@ -7,7 +7,7 @@ import multiprocessing
 
 bind = '0.0.0.0:9999'  # 绑定ip和端口号
 backlog = 512  # 监听队列
-chdir = '/home/Proxy_Server/Proxy_Server'  # gunicorn要切换到的目的工作目录
+chdir = '/usr/src/Proxy_Server'  # gunicorn要切换到的目的工作目录
 timeout = 30  # 超时
 worker_class = 'gevent'  # 使用gevent模式，还可以使用sync 模式，默认的是sync模式
 daemon = 'false'  # 守护进程,将进程交给supervisor管理
@@ -33,5 +33,5 @@ D          request time in microseconds
 L          request time in decimal seconds
 p          process ID
 """
-access_log = "/home/Proxy_Server/Proxy_Server/logs/gunicorn_access.log"  # 访问日志文件
-error_log = "/home/Proxy_Server/Proxy_Server/logs/gunicorn_error.log"  # 错误日志文件
+access_log = "/usr/src/Proxy_Server/logs/gunicorn_access.log"  # 访问日志文件
+error_log = "/usr/src/Proxy_Server/logs/gunicorn_error.log"  # 错误日志文件
