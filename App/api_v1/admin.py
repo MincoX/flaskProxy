@@ -4,8 +4,8 @@ import datetime
 
 from flask_wtf.csrf import generate_csrf
 from sqlalchemy.orm.exc import NoResultFound
-from flask import request, render_template, redirect, abort, jsonify, make_response
 from flask_login import login_user, login_required, logout_user, current_user
+from flask import request, render_template, redirect, abort, jsonify, make_response
 
 import settings
 from App import login_manager
@@ -46,20 +46,11 @@ def register():
     return redirect('/')
 
 
-@api_v1_app.route('/socket_io', methods=['GET'])
-def socket_io_api():
-    """
-    socket io page
-    :return:
-    """
-    return render_template('socket_io.html')
-
-
 @api_v1_app.route('/')
 @api_v1_app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('socket_io.html')
+        return render_template('login.html')
     else:
         session = Session()
         username = request.form.get('username')
@@ -113,3 +104,12 @@ def service(slug):
     response = make_response(res)
 
     return response
+
+
+@api_v1_app.route('/socket_io', methods=['GET'])
+def socket_io_api():
+    """
+    socket io page
+    :return:
+    """
+    return render_template('socket_io.html')
