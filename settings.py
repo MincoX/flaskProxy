@@ -20,6 +20,7 @@ class Config:
     # Redis
     REDIS_HOST = '49.232.19.51'
     REDIS_PORT = 63791
+    REDIS_PWD = ''
 
     # flask_session
     SESSION_TYPE = 'redis'

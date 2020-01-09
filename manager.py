@@ -6,7 +6,9 @@ from utils import logger
 from App import create_app
 from file_celery import async_tasks
 
-app, socket_io = create_app('develop')
+MODEL = 'develop'
+
+app, socket_io = create_app(MODEL)
 
 _thread = None
 lock = Lock()
