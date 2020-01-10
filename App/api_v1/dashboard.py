@@ -126,19 +126,42 @@ def get_total_active_scale(ser):
 
     if filter_date:
         filter_date = datetime.strptime(filter_date, '%Y-%m-%d')
-        proxies = session.query(Proxy).filter(cast(Proxy.create_time, DATE) == filter_date).all()
+        proxies = session.query(Proxy).filter(cast(Proxy.create_time, DATE) == filter_date)
     else:
-        proxies = session.query(Proxy).all()
+        proxies = session.query(Proxy)
+
+    ip66 = proxies.filter(Proxy.origin == '66ip').all()
+    active_ip66 = [item for item in ip66 if item.speed != -1]
+
+    kuaidaili = proxies.filter(Proxy.origin == 'kuaidaili').all()
+    active_kuaidaili = [item for item in kuaidaili if item.speed != -1]
+
+    ip3366 = proxies.filter(Proxy.origin == 'ip3366').all()
+    active_ip3366 = [item for item in ip3366 if item.speed != -1]
+
+    xici = proxies.filter(Proxy.origin == 'xici').all()
+    active_xici = [item for item in xici if item.speed != -1]
 
     scale = {
-        '66ip': f"{len([item for item in proxies if item.origin == '66ip' and item.speed != -1])} / {len([item for item in proxies if item.origin == '66ip'])}",
-        '66ip_scale': f'{round(len([item for item in proxies if item.origin == "66ip" and item.speed != -1]) / len([item for item in proxies if item.origin == "66ip"]) * 100, 1)}%',
-        'kuaidaili': f"{len([item for item in proxies if item.origin == 'kuaidaili' and item.speed != -1])} / {len([item for item in proxies if item.origin == 'kuaidaili'])}",
-        'kuaidaili_scale': f'{round(len([item for item in proxies if item.origin == "kuaidaili" and item.speed != -1]) / len([item for item in proxies if item.origin == "kuaidaili"]) * 100, 1)}%',
-        'ip3366': f"{len([item for item in proxies if item.origin == 'ip3366' and item.speed != -1])} / {len([item for item in proxies if item.origin == 'ip3366'])}",
-        'ip3366_scale': f'{round(len([item for item in proxies if item.origin == "ip3366" and item.speed != -1]) / len([item for item in proxies if item.origin == "ip3366"]) * 100, 1)}%',
-        'xici': f'{len([item for item in proxies if item.origin == "xicidaili" and item.speed != -1])} / {len([item for item in proxies if item.origin == "xicidaili"])}',
-        'xici_scale': f'{round(len([item for item in proxies if item.origin == "xicidaili" and item.speed != -1]) / len([item for item in proxies if item.origin == "xicidaili"]) * 100, 1)}%'
+        '66ip': f"{len(active_ip66)}"
+                f"/"
+                f"{len(ip66) - len(active_ip66)}",
+        '66ip_scale': f"{round(len(active_ip66) / len(ip66) * 100 if len(ip66) != 0 else 0, 1)}%",
+
+        'kuaidaili': f"{len(active_kuaidaili)}"
+                     f"/"
+                     f"{len(kuaidaili) - len(active_kuaidaili)}",
+        'kuaidaili_scale': f"{round(len(active_kuaidaili)) / len(kuaidaili) * 100 if len(kuaidaili) != 0 else 0, 1}%",
+
+        'ip3366': f"{len(active_ip3366)}"
+                  f"/"
+                  f"{len(ip3366) - len(active_ip3366)}",
+        'ip3366_scale': f"{round(len(active_ip3366)) / len(ip3366) * 100 if len(ip3366) != 0 else 0, 1}%",
+
+        'xici': f"{len(active_xici)}"
+                f"/"
+                f"{len(xici) - len(active_xici)}",
+        'xici_scale': f"{round(len(active_xici)) / len(xici) * 100 if len(xici) != 0 else 0, 1}%",
     }
 
     res = {
@@ -167,7 +190,7 @@ def get_pie_chart(ser):
         'label': label,
         'data': data,
         'scale': [
-            round((data[i] / num) * 100, 2) for i in range(len(data))
+            round((data[i] / num if num != 0 else 0) * 100, 2) for i in range(len(data))
         ],
         'grouped': grouped
     }
