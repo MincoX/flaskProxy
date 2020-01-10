@@ -139,7 +139,7 @@ def get_total_active_scale(ser):
     ip3366 = proxies.filter(Proxy.origin == 'ip3366').all()
     active_ip3366 = [item for item in ip3366 if item.speed != -1]
 
-    xici = proxies.filter(Proxy.origin == 'xici').all()
+    xici = proxies.filter(Proxy.origin == 'xicidaili').all()
     active_xici = [item for item in xici if item.speed != -1]
 
     scale = {
