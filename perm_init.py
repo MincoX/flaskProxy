@@ -15,7 +15,7 @@ def init_system():
     session = Session()
 
     if session.query(Perm).first():
-        return
+        return True
 
     perms = [
         Perm(name='基础用户', slug='base'),
