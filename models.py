@@ -5,6 +5,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, JSON, Tabl
     ForeignKey, DateTime, func, Boolean, Text, LargeBinary
 
 import settings
+from perm_init import init_system
 
 engine = create_engine(
     "mysql+mysqlconnector://root:root@49.232.19.51:33061/proxy_server",
@@ -160,3 +161,4 @@ def drop_db():
 if __name__ == '__main__':
     # drop_db()
     init_db()
+    init_system()
