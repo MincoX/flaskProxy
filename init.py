@@ -14,6 +14,9 @@ rel_role_perm = {
 def init_system():
     session = Session()
 
+    if session.query(Perm).first():
+        return
+
     perms = [
         Perm(name='基础用户', slug='base'),
         Perm(name='配置系统', slug='do_setting'),
