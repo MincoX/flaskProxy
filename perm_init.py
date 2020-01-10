@@ -51,8 +51,8 @@ def init_system():
     session.commit()
 
     session.close()
+    logger.info('init system')
 
 
 if __name__ == '__main__':
     init_system()
-    logger.info('init system')
