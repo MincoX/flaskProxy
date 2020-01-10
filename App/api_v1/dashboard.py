@@ -151,17 +151,17 @@ def get_total_active_scale(ser):
         'kuaidaili': f"{len(active_kuaidaili)}"
                      f"/"
                      f"{len(kuaidaili) - len(active_kuaidaili)}",
-        'kuaidaili_scale': f"{round(len(active_kuaidaili)) / len(kuaidaili) * 100 if len(kuaidaili) != 0 else 0, 1}%",
+        'kuaidaili_scale': f"{round(len(active_kuaidaili) / len(kuaidaili) * 100 if len(kuaidaili) != 0 else 0, 1)}%",
 
         'ip3366': f"{len(active_ip3366)}"
                   f"/"
                   f"{len(ip3366) - len(active_ip3366)}",
-        'ip3366_scale': f"{round(len(active_ip3366)) / len(ip3366) * 100 if len(ip3366) != 0 else 0, 1}%",
+        'ip3366_scale': f"{round(len(active_ip3366) / len(ip3366) * 100 if len(ip3366) != 0 else 0, 1)}%",
 
         'xici': f"{len(active_xici)}"
                 f"/"
                 f"{len(xici) - len(active_xici)}",
-        'xici_scale': f"{round(len(active_xici)) / len(xici) * 100 if len(xici) != 0 else 0, 1}%",
+        'xici_scale': f"{round(len(active_xici) / len(xici) * 100 if len(xici) != 0 else 0, 1)}%",
     }
 
     res = {
