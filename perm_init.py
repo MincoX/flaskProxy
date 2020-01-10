@@ -48,9 +48,10 @@ def init_system():
 
     role3 = session.query(Role).filter(Role.slug == 'role3').one()
     admin.roles.append(role3)
-    session.commit()
 
+    session.commit()
     session.close()
+
     logger.info('init system')
 
 
