@@ -1,9 +1,10 @@
-import time
-import logging
-import threading
+from gevent import monkey
+from gevent.pool import Pool
+
+monkey.patch_all()
+
 import importlib
 from datetime import datetime
-from concurrent.futures import ThreadPoolExecutor
 
 import settings
 from utils import logger
@@ -13,6 +14,8 @@ from utils.proxy_check import check_proxy
 
 
 class RunSpider:
+    def __init__(self):
+        self.coroutine_pool = Pool()
 
     def get_spider_obj_from_settings(self):
         """
@@ -23,9 +26,16 @@ class RunSpider:
         :return:
         """
         for full_name in settings.PROXIES_SPIDERS:
+            # 从右边以 '.' 进行分隔，maxsplit 代表只分隔一次
             module_name, class_name = full_name.rsplit('.', maxsplit=1)
+
+            # 导入具体爬虫所在的模块
             module = importlib.import_module(module_name)
+
+            # 获取具体爬虫中的类名
             cls = getattr(module, class_name)
+
+            # 创建具体爬虫的类对象
             spider = cls()
 
             yield spider
@@ -36,11 +46,14 @@ class RunSpider:
         :param spider:
         :return:
         """
-        start_time = time.time()
-        logger.warning(f'>>> {type(spider).__name__} 线程开始执行!')
+        # 异常处理，防止一个爬虫内部出错影响其它的爬虫
         try:
+            # 遍历爬虫对象的 get_proxies 方法，返回每一个 代理 ip 对象
             for proxy in spider.get_proxies():
+                # 检验代理 ip 的可用性
                 proxy = check_proxy(proxy)
+
+                # 如果 speed 不为 -1 说明可用，则保存到数据库中
                 if proxy.speed != -1:
                     session = Session()
                     exist = session.query(Proxy) \
@@ -79,22 +92,20 @@ class RunSpider:
                         logger.warning(f' already exist {proxy.ip}:{proxy.port}, update successfully')
                 else:
                     logger.info(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
-            end_time = time.time()
-            m, s = divmod(end_time - start_time, 60)
-            logger.warning(f'>>> {type(spider).__name__} 线程执行结束, 耗时 {m} 分 {s} 秒,'
-                           f' 剩余线程 {threading.activeCount() - 1} 个。')
 
         except Exception as e:
-            logger.error(f'spider: {type(spider).__name__}, error: {e}')
+            logger.error(f'scrapy error: {e}')
 
     def run(self):
+        # 获取所有的具体爬虫对象
         spiders = self.get_spider_obj_from_settings()
 
-        with ThreadPoolExecutor(max_workers=4) as t:  # 创建一个最大容纳数量为 4 的线程池
+        # 将每一个具体爬虫放入到协程池中，用函数引用的方式指向一次具体爬虫的任务
+        for spider in spiders:
+            self.coroutine_pool.apply_async(self.__execute_one_spider_task, args=(spider,))
 
-            # 通过submit提交执行的函数到线程池中
-            for spider in spiders:
-                type(spider).__name__ = t.submit(self.__execute_one_spider_task, spider)
+        # 使用协程池的 join 方法，让当前线程等待协程池的任务完成
+        self.coroutine_pool.join()
 
     @classmethod
     def start(cls):

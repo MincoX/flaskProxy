@@ -1,6 +1,9 @@
-import logging
+from gevent import monkey
+from gevent.pool import Pool
+
+monkey.patch_all()
+
 from queue import Queue
-from concurrent.futures import ThreadPoolExecutor
 
 import settings
 from utils import logger
@@ -10,9 +13,10 @@ from utils.proxy_check import check_proxy
 
 
 class ProxyTest:
+
     def __init__(self):
         self.queue = Queue()
-        self.pool = ThreadPoolExecutor(max_workers=6)
+        self.coroutine_pool = Pool()
 
     # 检查当前一个代理 ip 的可用性
     def __check_one_proxy(self):
@@ -21,10 +25,10 @@ class ProxyTest:
         # 从队列中获取代理 ip，进行检查
         proxy = self.queue.get()
 
-        # 检查代理的可用性
+        # 2.2 检查代理的可用性
         proxy = check_proxy(proxy)
 
-        # 如果代理不可用，就让代理分数减 1
+        # 2.3 如果代理不可用，就让代理分数减 1
         if proxy.speed == -1:
 
             proxy.score['power'] += 1
@@ -53,6 +57,7 @@ class ProxyTest:
         self.queue.task_done()
 
     def run(self):
+
         # 从数据库获取所有的代理 ip
         session = Session()
         proxies = session.query(Proxy).all()
@@ -63,10 +68,10 @@ class ProxyTest:
             self.queue.put(proxy)
 
         # 开启指定个数的协程，来处理代理 ip 的检测
-        for i in range(8):
+        for i in range(settings.TEST_PROXIES_ASYNC_COUNT):
             # 将检测任务存放到协程池中，
             # 使用回调函数的方式让每一个协程死循环的从队列中取出待检测的 ip，放入到协程池中
-            self.pool.submit(self.__check_one_proxy).add_done_callback(self.__check_callback)
+            self.coroutine_pool.apply_async(self.__check_one_proxy, callback=self.__check_callback)
 
         # 让当前的线程等待队列任务的完成
         self.queue.join()
@@ -77,7 +82,7 @@ class ProxyTest:
         :param temp:
         :return:
         """
-        self.pool.submit(self.__check_one_proxy).add_done_callback(self.__check_callback)
+        self.coroutine_pool.apply_async(self.__check_one_proxy, callback=self.__check_callback)
 
     @classmethod
     def start(cls):
