@@ -50,7 +50,7 @@ config_map = {
 
 ADMIN_NAVIGATE = [
     {'nav': '系统概况', 'href': 'dashboard'},
-    {'nav': '服务配置', 'href': 'config'},
+    {'nav': '服务监控', 'href': 'config'},
     {'nav': '权限分配', 'href': 'permission'},
     {'nav': '留言板块', 'href': 'message'},
 ]
