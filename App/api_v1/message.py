@@ -8,8 +8,8 @@ from werkzeug.utils import secure_filename
 
 import settings
 from utils import logger
-from models import Proxy, Admin, Message
 from utils.tools import object_to_dict
+from models import Proxy, Admin, Message
 from utils.api_service import ApiService, permission_api_service
 
 
@@ -56,13 +56,17 @@ def get_announcement_message(ser):
 
     session = ser.session
     announcement = session.query(Message).filter(Message.admin_id == 1).order_by(Message.create_time.desc()).first()
-
-    res = {
-        'status': 1,
-        'message': object_to_dict(announcement),
-        'username': announcement.admin.username,
-        'header': announcement.admin.header
-    }
+    if announcement:
+        res = {
+            'status': 1,
+            'message': object_to_dict(announcement),
+            'username': announcement.admin.username,
+            'header': announcement.admin.header
+        }
+    else:
+        res = {
+            'status': 0
+        }
 
     return json.dumps(res)
 
