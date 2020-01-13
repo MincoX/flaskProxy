@@ -72,21 +72,32 @@ def get_navigate(service):
 
 # @ApiService
 @permission_api_service(perms=['base'])
-def get_line_chart(service):
+def post_line_chart(service):
     """
     获取近期爬虫曲线图
     :param service:
     :return:
     """
     session = service.session
-    filter_date = request.form.get('filter_date')
+    filter_date = request.form.get('filter_date').replace('/', '-')
+    filter_date = datetime.strptime(filter_date, '%Y-%m-%d').strftime('%Y-%m-%d')
 
-    if filter_date:
+    if filter_date and filter_date != datetime.today().strftime('%Y-%m-%d'):
         filter_date = datetime.strptime(filter_date + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
         lt = filter_date + timedelta(days=1)
         bt = filter_date
     else:
-        lt = session.query(Proxy).order_by(Proxy.create_time.desc()).first().create_time
+        obj = session.query(Proxy).order_by(Proxy.create_time.desc()).first()
+
+        if not obj:
+            res = {
+                'status': 0,
+                'message': '库存为空！'
+            }
+
+            return res
+
+        lt = obj.create_time
         bt = lt + timedelta(days=-1)
 
     label = hour_range(bt.strftime("%Y-%m-%d %H"), lt.strftime("%Y-%m-%d %H"))[::3]
@@ -115,20 +126,17 @@ def get_line_chart(service):
 
 # @ApiService
 @permission_api_service(perms=['base'])
-def get_total_active_scale(ser):
+def post_total_active_scale(ser):
     """
-    获取活跃量和总量的比例
+    获取当天 活跃量 / 过期量
     :param ser:
     :return:
     """
     session = ser.session
-    filter_date = request.form.get('filter_date')
+    filter_date = request.form.get('filter_date').replace('/', '-')
+    filter_date = datetime.strptime(filter_date, '%Y-%m-%d').strftime('%Y-%m-%d')
 
-    if filter_date:
-        filter_date = datetime.strptime(filter_date, '%Y-%m-%d')
-        proxies = session.query(Proxy).filter(cast(Proxy.create_time, DATE) == filter_date)
-    else:
-        proxies = session.query(Proxy)
+    proxies = session.query(Proxy).filter(cast(Proxy.create_time, DATE) == filter_date)
 
     ip66 = proxies.filter(Proxy.origin == '66ip').all()
     active_ip66 = [item for item in ip66 if item.speed != -1]
