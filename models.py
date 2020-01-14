@@ -157,7 +157,7 @@ class CeleryTask(Base):
     id = Column(Integer, primary_key=True)
     task_id = Column(String(128), default='')
     task_name = Column(String(128), default='')
-    task_status = Column(Boolean, default=True)
+    task_status = Column(Integer, default=1)
     start_time = Column(DateTime(timezone=True), default=func.now())
     end_time = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     times = nick_type = Column(Integer, default='')
