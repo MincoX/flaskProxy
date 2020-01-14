@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.mutable import MutableDict, MutableList
@@ -147,6 +149,19 @@ class Proxy(Base):
     disable_domain = Column(MutableList.as_mutable(JSON), default=[])
     origin = Column(String(128), default='')
     create_time = Column(DateTime(timezone=True), default=func.now())
+
+
+class CeleryTask(Base):
+    __tablename__ = 'celery_task'
+
+    id = Column(Integer, primary_key=True)
+    task_id = Column(String(128), default='')
+    task_name = Column(String(128), default='')
+    task_status = Column(Boolean, default=True)
+    start_time = Column(DateTime(timezone=True), default=func.now())
+    end_time = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+    times = nick_type = Column(Integer, default='')
+    harvest = Column(Integer, nullable=True)
 
 
 def init_db():
