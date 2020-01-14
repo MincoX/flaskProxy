@@ -160,7 +160,7 @@ class CeleryTask(Base):
     task_status = Column(Integer, default=1)
     start_time = Column(DateTime(timezone=True), default=func.now())
     end_time = Column(DateTime, default=datetime.now, onupdate=datetime.now)
-    times = nick_type = Column(Integer, default='')
+    consume = Column(String(128), default='')
     harvest = Column(Integer, nullable=True)
 
 
