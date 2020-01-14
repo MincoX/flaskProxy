@@ -17,18 +17,18 @@ class CallbackTask(Task):
         print(f'任务执行完毕， 执行回调函数： {get_res(retval)}')
 
 
-def on_failure(self, exc, task_id, args, kwargs, einfo):
-    """
-    失败执行的函数
-    :param self:
-    :param exc:
-    :param task_id:
-    :param args:
-    :param kwargs:
-    :param einfo:
-    :return:
-    """
-    print("callback failure function")
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        """
+        失败执行的函数
+        :param self:
+        :param exc:
+        :param task_id:
+        :param args:
+        :param kwargs:
+        :param einfo:
+        :return:
+        """
+        print("callback failure function")
 
 
 @celery_app.task(base=CallbackTask)
