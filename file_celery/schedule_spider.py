@@ -6,11 +6,13 @@ monkey.patch_all()
 import importlib
 from datetime import datetime
 
+from celery import Task
+
 import settings
 from utils import logger
 from celery_app import celery_app
-from models import Session, Proxy
 from utils.proxy_check import check_proxy
+from models import Session, Proxy, CeleryTask
 
 
 class RunSpider:
@@ -119,9 +121,64 @@ class RunSpider:
         rs.run()
 
 
+class CallbackTask(Task):
+
+    def __init__(self):
+        self.session = Session()
+
+    def on_success(self, result, task_id, args, kwargs):
+        """
+        成功执行的函数
+        :param result:
+        :param task_id:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        task = self.session.query(CeleryTask).filter(CeleryTask.task_id == task_id).first()
+        task.end_time = datetime.now()
+        task.task_status = 0
+        task.harvest = self.session.query(Proxy).count() - task.harvest
+        self.session.commit()
+        self.session.close()
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        """
+        失败执行的函数
+        :param self:
+        :param exc:
+        :param task_id:
+        :param args:
+        :param kwargs:
+        :param einfo:
+        :return:
+        """
+        task = self.session.query(CeleryTask).filter(CeleryTask.task_id == task_id).first()
+        task.end_time = datetime.now()
+        task.task_status = -1
+        task.harvest = self.session.query(Proxy).count() - task.harvest
+        self.session.commit()
+        self.session.close()
+
+
+@celery_app.task(base=CallbackTask)
+def delay_spider():
+    RunSpider.start()
+
+
 @celery_app.task
 def schedule_spider():
-    RunSpider.start()
+    task_id = delay_spider.delay()
+
+    session = Session()
+    celery_task = CeleryTask(
+        task_id=task_id,
+        task_name='spider',
+        harvest=session.query(Proxy).count()
+    )
+    session.add(celery_task)
+    session.commit()
+    session.close()
 
 
 if __name__ == '__main__':

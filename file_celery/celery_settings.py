@@ -16,20 +16,27 @@ imports = [
     "file_celery.schedule_spider",  # 定时爬虫
     "file_celery.schedule_check",  # 定时检测
     "file_celery.async_tasks",  # 异步任务
+    "file_celery.tt",  # 异步任务
 ]
 
 # 需要执行任务的配置
 beat_schedule = {
 
-    'spider': {
-        'task': 'file_celery.schedule_spider.schedule_spider',
-        'schedule': crontab(minute=0, hour='*/4'),
-        'args': (),
-    },
+    # 'spider': {
+    #     'task': 'file_celery.schedule_spider.schedule_spider',
+    #     'schedule': crontab(minute=0, hour='*/4'),
+    #     'args': (),
+    # },
+    #
+    # 'check': {
+    #     'task': 'file_celery.schedule_check.schedule_check',
+    #     'schedule': crontab(minute=0, hour='*/6'),
+    #     'args': (),
+    # },
 
-    'check': {
-        'task': 'file_celery.schedule_check.schedule_check',
-        'schedule': crontab(minute=0, hour='*/6'),
+    'tt': {
+        'task': 'file_celery.tt.sc',
+        'schedule': crontab(minute='*/1'),
         'args': (),
     },
 
