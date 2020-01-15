@@ -1,8 +1,11 @@
 # from __future__ import absolute_import
 from celery.schedules import crontab
 
-broker_url = "redis://49.232.19.51:63791/1"  # 使用redis存储任务队列
-result_backend = "redis://49.232.19.51:63791/2"  # 使用redis存储结果
+# broker_url = "redis://49.232.19.51:63791/1"  # 使用redis存储任务队列
+# result_backend = "redis://49.232.19.51:63791/2"  # 使用redis存储结果
+
+broker_url = "redis://127.0.0.1:6379/1"  # 使用redis存储任务队列
+result_backend = "redis://127.0.0.1:6379/2"  # 使用redis存储结果
 
 task_serializer = 'json'
 result_serializer = 'json'
@@ -16,7 +19,7 @@ imports = [
     "file_celery.schedule_spider",  # 定时爬虫
     "file_celery.schedule_check",  # 定时检测
     "file_celery.async_tasks",  # 异步任务
-    "file_celery.tt",  # 异步任务
+    "file_celery.study",  # 异步任务
 ]
 
 # 需要执行任务的配置
@@ -34,8 +37,8 @@ beat_schedule = {
     #     'args': (),
     # },
 
-    'tt': {
-        'task': 'file_celery.tt.sc',
+    'test': {
+        'task': 'file_celery.study.test',
         'schedule': crontab(minute='*/1'),
         'args': (),
     },
