@@ -1,43 +1,42 @@
-from datetime import datetime
-
 from abc import ABC
 from celery import Task
 
 from celery_app import celery_app
+from utils.celery_tools import SaveTask
 
 
-class SaveTask(Task, ABC):
-
-    def __init__(self):
-        pass
-
-    def __call__(self, *args, **kwargs):
-        print(f'任务开始执行, {self.request.id}, {self.name}')
-        return super().__call__(*args, **kwargs)
-
-    def on_success(self, result, task_id, args, kwargs):
-        """
-        任务执行成功
-        :param result:
-        :param task_id:
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        print(f'任务成功执行， result: {result}, task_id: {task_id}, args: {args}, kwargs: {kwargs}')
-
-    def on_failure(self, exc, task_id, args, kwargs, error_info):
-        """
-        任务执行失败
-        :param self:
-        :param exc:
-        :param task_id:
-        :param args:
-        :param kwargs:
-        :param error_info:
-        :return:
-        """
-        print(f'任务成功失败: {exc}, {task_id}, {args}, {kwargs}, {error_info}')
+# class SaveTask(Task, ABC):
+#
+#     def __init__(self):
+#         pass
+#
+#     def __call__(self, *args, **kwargs):
+#         print(f'任务开始执行, {self.request.id}, {self.name}')
+#         return super().__call__(*args, **kwargs)
+#
+#     def on_success(self, result, task_id, args, kwargs):
+#         """
+#         任务执行成功
+#         :param result:
+#         :param task_id:
+#         :param args:
+#         :param kwargs:
+#         :return:
+#         """
+#         print(f'任务成功执行， result: {result}, task_id: {task_id}, args: {args}, kwargs: {kwargs}')
+#
+#     def on_failure(self, exc, task_id, args, kwargs, error_info):
+#         """
+#         任务执行失败
+#         :param self:
+#         :param exc:
+#         :param task_id:
+#         :param args:
+#         :param kwargs:
+#         :param error_info:
+#         :return:
+#         """
+#         print(f'任务成功失败: {exc}, {task_id}, {args}, {kwargs}, {error_info}')
 
 
 @celery_app.task(bind=True, base=SaveTask)
