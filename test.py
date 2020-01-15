@@ -48,8 +48,32 @@ def dec():
     print('dec end')
 
 
+import os
+
+
+def get_file_list(path):
+    """
+    查找文件
+    :param path:
+    :return:
+    """
+    for home, dirs, files in os.walk(path):
+        # print("#######dir list#######")
+        # for dir in dirs:
+        #     print(dir)
+        # print("#######dir list#######")
+
+        # print("#######file list#######")
+        for filename in files:
+            # print(filename)
+            if filename == 'socket.py':
+                fullname = os.path.join(home, filename)
+                print(fullname)
+        # print("#######file list#######")
+
+
 if __name__ == '__main__':
     # print('debug')
     # test(1, 2)
     # dec()
-    pass
+    get_file_list('D:/Virtualenvs/Spider')
