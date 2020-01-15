@@ -25,22 +25,22 @@ imports = [
 # 需要执行任务的配置
 beat_schedule = {
 
-    # 'spider': {
-    #     'task': 'file_celery.schedule_spider.schedule_spider',
-    #     'schedule': crontab(minute=0, hour='*/4'),
-    #     'args': (),
-    # },
-    #
-    # 'check': {
-    #     'task': 'file_celery.schedule_check.schedule_check',
-    #     'schedule': crontab(minute=0, hour='*/6'),
-    #     'args': (),
-    # },
-
-    'test': {
-        'task': 'file_celery.study.test',
-        'schedule': crontab(minute='*/1'),
+    'spider': {
+        'task': 'file_celery.schedule_spider.schedule_spider',
+        'schedule': crontab(minute=0, hour='*/4'),
         'args': (),
     },
+
+    'check': {
+        'task': 'file_celery.schedule_check.schedule_check',
+        'schedule': crontab(minute=0, hour='*/6'),
+        'args': (),
+    },
+
+    # 'test': {
+    #     'task': 'file_celery.study.test',
+    #     'schedule': crontab(minute='*/1'),
+    #     'args': (),
+    # },
 
 }
