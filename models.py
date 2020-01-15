@@ -157,11 +157,11 @@ class CeleryTask(Base):
     id = Column(Integer, primary_key=True)
     task_id = Column(String(128), default='')
     task_name = Column(String(128), default='')
-    task_status = Column(Integer, default=1)
-    start_time = Column(DateTime(timezone=True), default=func.now())
-    end_time = Column(DateTime, default=func.now(), onupdate=func.now())
-    times = Column(String(128), default='')
-    harvest = Column(Integer, nullable=True)
+    task_status = Column(Integer, nullable=True, default=1)
+    start_time = Column(DateTime(timezone=True), nullable=True, default=func.now())
+    end_time = Column(DateTime, nullable=True, default=func.now(), onupdate=func.now())
+    times = Column(String(128), nullable=True, default='')
+    harvest = Column(Integer, nullable=True, default=0)
 
 
 def init_db():
