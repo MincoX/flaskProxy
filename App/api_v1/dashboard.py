@@ -207,7 +207,8 @@ def get_pie_chart(ser):
 
 
 if __name__ == '__main__':
-    b = get_line_chart()
-    print(b)
+    pass
+    # b = post_line_chart()
+    # print(b)
     # a = map(test, la, rela)
     # print(list(a))
