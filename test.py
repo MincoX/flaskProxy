@@ -1,4 +1,4 @@
-print('start')
+# print('start')
 
 
 class ApiService:
@@ -49,6 +49,7 @@ def dec():
 
 
 if __name__ == '__main__':
-    print('debug')
+    # print('debug')
     # test(1, 2)
-    dec()
+    # dec()
+    pass
