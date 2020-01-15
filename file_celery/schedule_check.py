@@ -9,6 +9,7 @@ import settings
 from utils import logger
 from celery_app import celery_app
 from models import Session, Proxy
+from utils.celery_tools import SaveTask
 from utils.proxy_check import check_proxy
 
 
@@ -100,7 +101,7 @@ class ProxyTest:
         proxy_tester.run()
 
 
-@celery_app.task
+@celery_app.task(bind=True, base=SaveTask)
 def schedule_check():
     ProxyTest.start()
 
