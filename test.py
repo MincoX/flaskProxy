@@ -1,6 +1,7 @@
+import os
+
+
 # print('start')
-
-
 class ApiService:
     def __init__(self, func=None):
         self.func = func
@@ -46,9 +47,6 @@ def dec2(func):
 def dec():
     print('dec start')
     print('dec end')
-
-
-import os
 
 
 def get_file_list(path):
