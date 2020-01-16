@@ -123,7 +123,7 @@ class RunSpider:
 
 
 @celery_app.task(bind=True, base=SaveTask)
-def schedule_spider():
+def schedule_spider(self):
     RunSpider.start()
 
 

@@ -102,7 +102,7 @@ class ProxyTest:
 
 
 @celery_app.task(bind=True, base=SaveTask)
-def schedule_check():
+def schedule_check(self):
     ProxyTest.start()
 
 
