@@ -55,7 +55,7 @@ def recv(msg):
 def background_thread():
     with open('logs/main.log', "r") as f:
         while True:
-            socket_io.sleep(3)
+            socket_io.sleep(1)
             try:
                 for line in f.readlines():
                     socket_io.emit('message', {'data': line}, namespace='/conn_logging')
