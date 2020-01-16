@@ -6,14 +6,12 @@ monkey.patch_all()
 import importlib
 from datetime import datetime
 
-from celery import Task
-
 import settings
 from utils import logger
+from models import Session, Proxy
 from celery_app import celery_app
 from utils.celery_tools import SaveTask
 from utils.proxy_check import check_proxy
-from models import Session, Proxy, CeleryTask
 
 
 class RunSpider:
@@ -29,16 +27,10 @@ class RunSpider:
         :return:
         """
         for full_name in settings.PROXIES_SPIDERS:
-            # 从右边以 '.' 进行分隔，maxsplit 代表只分隔一次
             module_name, class_name = full_name.rsplit('.', maxsplit=1)
-
-            # 导入具体爬虫所在的模块
             module = importlib.import_module(module_name)
 
-            # 获取具体爬虫中的类名
             cls = getattr(module, class_name)
-
-            # 创建具体爬虫的类对象
             spider = cls()
 
             yield spider
@@ -49,14 +41,10 @@ class RunSpider:
         :param spider:
         :return:
         """
-        # 异常处理，防止一个爬虫内部出错影响其它的爬虫
         try:
-            # 遍历爬虫对象的 get_proxies 方法，返回每一个 代理 ip 对象
             for proxy in spider.get_proxies():
-                # 检验代理 ip 的可用性
                 proxy = check_proxy(proxy)
 
-                # 如果 speed 不为 -1 说明可用，则保存到数据库中
                 if proxy.speed != -1:
                     session = Session()
                     exist = session.query(Proxy) \
@@ -79,7 +67,7 @@ class RunSpider:
                         session.add(obj)
                         session.commit()
                         session.close()
-                        logger.warning(f' insert: {proxy.ip}:{proxy.port} from {proxy.origin}')
+                        logger.info(f'insert: {proxy.ip}:{proxy.port} from {proxy.origin}!')
                     else:
                         exist.score['score'] = settings.MAX_SCORE
                         exist.score['power'] = 0
@@ -92,18 +80,16 @@ class RunSpider:
                         exist.origin = proxy.origin
                         session.commit()
                         session.close()
-                        logger.warning(f' already exist {proxy.ip}:{proxy.port}, update successfully')
+                        logger.info(f'update: {proxy.ip}:{proxy.port}, to max score successfully!')
                 else:
-                    logger.info(f' invalid {proxy.ip}:{proxy.port} from {proxy.origin}')
+                    logger.info(f'invalid: {proxy.ip}:{proxy.port} from {proxy.origin}')
 
         except Exception as e:
-            logger.error(f'scrapy error: {e}')
+            logger.error(f'spider error: {e}')
 
     def run(self):
-        # 获取所有的具体爬虫对象
         spiders = self.get_spider_obj_from_settings()
 
-        # 将每一个具体爬虫放入到协程池中，用函数引用的方式指向一次具体爬虫的任务
         for spider in spiders:
             self.coroutine_pool.apply_async(self.__execute_one_spider_task, args=(spider,))
 
@@ -117,7 +103,6 @@ class RunSpider:
         类方法，方便最后整合直接通过 类名.start() 方法去执行这个类里面的所任务
         :return:
         """
-        # 创建当前类对象，使用当前类对象调用当前类中的 run 方法，执行所有的具体爬虫
         rs = cls()
         rs.run()
 

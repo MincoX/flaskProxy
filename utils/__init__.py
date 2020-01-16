@@ -11,7 +11,7 @@ formatter = logging.Formatter('%(asctime)s, %(filename)s:%(lineno)d >>> %(leveln
 
 log_file_handler = RotatingFileHandler(os.path.join(BASE_DIR, "logs/main.log"), maxBytes=1024 * 1024 * 1, backupCount=3)
 log_file_handler.setFormatter(formatter)
-log_file_handler.setLevel(logging.WARNING)
+log_file_handler.setLevel(logging.INFO)
 logger.addHandler(log_file_handler)
 
 stream_handler = logging.StreamHandler(sys.stdout)
