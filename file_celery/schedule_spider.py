@@ -3,11 +3,13 @@ from gevent.pool import Pool
 
 monkey.patch_all()
 
+import json
 import importlib
 from datetime import datetime
 
 import settings
 from utils import logger
+from utils import redis_pool
 from models import Session, Proxy
 from celery_app import celery_app
 from utils.celery_tools import SaveTask
@@ -17,6 +19,7 @@ from utils.proxy_check import check_proxy
 class RunSpider:
     def __init__(self):
         self.coroutine_pool = Pool()
+        self.redis_cli = redis_pool.RedisModel()
 
     def get_spider_obj_from_settings(self):
         """
@@ -86,6 +89,11 @@ class RunSpider:
 
         except Exception as e:
             logger.error(f'spider error: {e}')
+
+            error_info = {
+                type(self).__name__: e
+            }
+            self.redis_cli.push_tail('spider_error', json.dumps(error_info))
 
     def run(self):
         spiders = self.get_spider_obj_from_settings()
