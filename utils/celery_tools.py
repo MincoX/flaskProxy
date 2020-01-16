@@ -4,6 +4,7 @@ from datetime import datetime
 from abc import ABC
 from celery import Task
 
+from utils import logger
 from models import Session, CeleryTask, Proxy
 
 
@@ -19,6 +20,8 @@ class SaveTask(Task, ABC):
         :param kwargs:
         :return:
         """
+        logger.info(f'{self.name} 任务开始执行!'.center(100, '*'))
+
         self.task = CeleryTask(
             task_id=str(self.request.id),
             task_name=str(self.name),
@@ -70,6 +73,8 @@ class SaveTask(Task, ABC):
         self.session.commit()
         self.session.close()
 
+        logger.info(f'{self.name} 任务执行完成!'.center(100, '*'))
+
     def on_failure(self, exc, task_id, args, kwargs, error_info):
         """
         任务执行失败
@@ -90,3 +95,5 @@ class SaveTask(Task, ABC):
 
         self.session.commit()
         self.session.close()
+
+        logger.info(f'{self.name} 任务执行失败!'.center(100, '*'))
