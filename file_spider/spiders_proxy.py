@@ -8,7 +8,7 @@ class XiciSpider(BaseSpider):
     """
     实现西刺代理的爬取
     """
-    urls = [f'https://www.xicidaili.com/nn/{x}' for x in range(1, 20)]
+    urls = [f'https://www.xicidaili.com/nn/{x}' for x in range(1, 10)]
 
     group_xpath = "//*[@id='ip_list']/tr[position()>1]"
     detail_xpath = {
@@ -75,7 +75,7 @@ class Ip66Spider(BaseSpider):
 if __name__ == '__main__':
 
     config = {
-        'urls': [f'https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-{x}' for x in range(1, 7)],
+        'urls': [f'https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-{x}' for x in range(1, 6)],
         'group_xpath': "//*[@id='page']/table[2]/tr[position()>1]",
         'detail_xpath': {
             'ip': './td[2]/text()',
