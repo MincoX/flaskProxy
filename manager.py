@@ -26,7 +26,7 @@ def connect():
     """
     global _thread
     socket_io.emit('message', {'data': "service connected!"}, namespace='/conn_logging', callback=ack)
-    logger.warning(f'客户端已成功连接！')
+    logger.info(f'客户端已成功连接！')
     with lock:
         if _thread is None:
             _thread = socket_io.start_background_task(target=background_thread)
@@ -38,7 +38,7 @@ def disconnect_request():
     断开连接请求
     :return:
     """
-    logger.warning(f'客户端断开连接！')
+    logger.info(f'客户端断开连接！')
     disconnect()
 
 
@@ -49,7 +49,7 @@ def recv(msg):
     :param msg:
     :return:
     """
-    logger.warning(f'收到来自客户端的消息： {msg}')
+    logger.info(f'收到来自客户端的消息： {msg}')
 
 
 def background_thread():
