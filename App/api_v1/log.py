@@ -7,7 +7,7 @@ from sqlalchemy import cast, DATE, func, and_
 
 import settings
 from utils import logger
-from models import Admin, Proxy, AdminLoginLog
+from models import Admin, Proxy, AdminLoginLog, CeleryTask
 from utils.tools import object_to_dict, hour_range
 from utils.api_service import ApiService, permission_api_service
 
@@ -35,6 +35,40 @@ def get_login_log(ser):
             }
             for login_log in login_logs
         ]
+    }
+
+    return json.dumps(res)
+
+
+@permission_api_service(perms=['base'])
+def post_celery_task(ser):
+    """
+    获取 celery 任务计划
+    :param ser:
+    :return:
+    """
+    session = ser.session
+    # filter_date = request.form.get('filter_date')
+    filter_date = '2020-01-21'
+    tasks = session.query(CeleryTask).filter(cast(CeleryTask.end_time, DATE) == filter_date)
+    res = {
+        'status': 1,
+        'task_list': [
+            {
+                'task_id': task.task_id,
+                'task_name': task.task_name.split('.')[-1],
+                'task_status': task.task_status,
+                'start_time': task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'end_time': task.end_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'times': task.times,
+                'harvest': (task.harvest ** 2) ** 0.5,
+            }
+            for task in tasks
+        ],
+        'task_info': {
+            'estimate_spider': '',
+            'estimate_check': '',
+        }
     }
 
     return json.dumps(res)
