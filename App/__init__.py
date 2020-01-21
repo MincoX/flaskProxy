@@ -49,7 +49,7 @@ def create_app(config_name):
     app.register_blueprint(api_v1_app)
 
     global socket_io
-    socket_io = SocketIO()
+    socket_io = SocketIO(cors_allowed_origins='*')
     socket_io.init_app(app)
 
     return app, socket_io
