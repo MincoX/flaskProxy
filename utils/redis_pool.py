@@ -50,6 +50,20 @@ class RedisModel(object):
         """
         return self._connection.rpush(key, value)
 
+    def l_len(self, key):
+        """
+        返回列表长度
+        """
+        return self._connection.llen(key)
+
+    def r_pop(self, key):
+        """
+        去除列表最后一个元素
+        :param key:
+        :return:
+        """
+        return self._connection.rpop(key)
+
     def get_range_list(self, key, start, end):
         """
         获取指定范围列表

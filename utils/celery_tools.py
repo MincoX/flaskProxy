@@ -41,8 +41,8 @@ class SaveTask(Task, ABC):
         :param t2:
         :return:
         """
-        start = datetime.strptime(t1.strftime('%Y-%y-%d %H:%M:%S'), '%Y-%y-%d %H:%M:%S')
-        end = datetime.strptime(t2.strftime('%Y-%y-%d %H:%M:%S'), '%Y-%y-%d %H:%M:%S')
+        start = datetime.strptime(t1.strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S')
+        end = datetime.strptime(t2.strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S')
         start = time.mktime(start.timetuple()) * 1000 + start.microsecond / 1000
         end = time.mktime(end.timetuple()) * 1000 + end.microsecond / 1000
 

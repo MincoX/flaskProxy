@@ -93,7 +93,7 @@ class RunSpider:
             error_info = {
                 type(self).__name__: e
             }
-            self.redis_cli.push_tail('spider_error', json.dumps(error_info))
+            self.redis_cli.push_tail('spider_error', error_info)
 
     def run(self):
         spiders = self.get_spider_obj_from_settings()
