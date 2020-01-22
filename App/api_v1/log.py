@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timedelta
 
+from flask import request
 from sqlalchemy import cast, DATE, func, and_
 
 import settings
@@ -62,14 +63,21 @@ def get_log_dashboard(ser):
 
 # @ApiService
 @permission_api_service(perms=['base'])
-def get_login_log(ser):
+def post_login_log(ser):
     """
     获取登录日志
     :param ser:
     :return:
     """
     session = ser.session
-    login_logs = session.query(AdminLoginLog).order_by(AdminLoginLog.create_time.desc()).all()
+
+    filter_date = request.form.get('filter_date').replace('/', '-')
+    filter_date = datetime.strptime(filter_date, '%Y-%m-%d').strftime('%Y-%m-%d')
+    login_logs = session.query(AdminLoginLog) \
+        .filter(cast(AdminLoginLog.create_time, DATE) == filter_date) \
+        .order_by(AdminLoginLog.create_time.desc()) \
+        .all()
+
     res = {
         'status': 1,
         'login_info': [
@@ -96,9 +104,11 @@ def post_celery_task(ser):
     :return:
     """
     session = ser.session
-    # filter_date = request.form.get('filter_date')
-    filter_date = '2020-01-21'
+
+    filter_date = request.form.get('filter_date').replace('/', '-')
+    filter_date = datetime.strptime(filter_date, '%Y-%m-%d').strftime('%Y-%m-%d')
     tasks = session.query(CeleryTask).filter(cast(CeleryTask.end_time, DATE) == filter_date)
+
     res = {
         'status': 1,
         'task_list': [
