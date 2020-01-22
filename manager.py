@@ -18,7 +18,8 @@ def ack():
     print('message was received!')
 
 
-@socket_io.on('connect', namespace='/conn_logging')
+# @socket_io.on('connect', namespace='/conn_logging')
+@socket_io.on('connect')
 def connect():
     """
     请求连接
@@ -32,24 +33,26 @@ def connect():
             _thread = socket_io.start_background_task(target=background_thread)
 
 
-@socket_io.on('disconnect_request', namespace='/conn_logging')
+# @socket_io.on('disconnect_request', namespace='/conn_logging')
+@socket_io.on('disconnect_request')
 def disconnect_request():
     """
     断开连接请求
     :return:
     """
-    logger.info(f'客户端断开连接！')
+    logger.info(f'Client disconnected！')
     disconnect()
 
 
-@socket_io.on("recv", namespace="/conn_logging")
+# @socket_io.on("recv", namespace="/conn_logging")
+@socket_io.on("recv")
 def recv(msg):
     """
     服务器端负责接受消息
     :param msg:
     :return:
     """
-    logger.info(f'收到来自客户端的消息： {msg}')
+    logger.info(f'Recv from client： {msg}')
 
 
 def background_thread():
@@ -58,9 +61,10 @@ def background_thread():
             socket_io.sleep(2)
             try:
                 for line in f.readlines():
-                    socket_io.emit('message', {'data': line}, namespace='/conn_logging')
+                    socket_io.emit('message', {'data': line})
             except Exception as e:
-                pass
+                logger.info(f'日志轮询错误: {e}')
+                continue
 
 
 # def background_thread():
