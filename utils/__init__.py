@@ -7,8 +7,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s, %(filename)s:%(lineno)d >>> %(levelname)s: %(message)s')
-
+formatter = logging.Formatter('%(levelname)s: %(filename)s:%(lineno)d >>> %(message)s <<< %(asctime)s')
 log_file_handler = RotatingFileHandler(os.path.join(BASE_DIR, "logs/main.log"), maxBytes=1024 * 1024 * 1, backupCount=3)
 log_file_handler.setFormatter(formatter)
 log_file_handler.setLevel(logging.INFO)
