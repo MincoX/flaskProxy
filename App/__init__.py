@@ -42,7 +42,9 @@ def create_app(config_name):
     redis_store = redis.StrictRedis(host=config_class.REDIS_HOST, port=config_class.REDIS_PORT)
 
     # 利用 flask-session 将 session 数据保存到 redis 中
-    Session(app)
+    app.config['PERMANENT_SESSION_LIFETIME'] = 60 * 60 * 2  # 键有效期单位秒
+    session = Session()
+    session.init_app(app)
 
     # 放在此刻导入是为了解决循环导入
     from App.api_v1 import api_v1_app
