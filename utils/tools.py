@@ -1,4 +1,5 @@
 import re
+import time
 from datetime import datetime, timedelta
 
 from utils import logger
@@ -66,6 +67,26 @@ def hour_range(
         date = hour.strftime("%Y-%m-%d %H")
 
     return hours
+
+
+def calculate_time_countdown(end):
+    """
+    计算两个时间差，返回时间倒计时
+    :param end:
+    :return:
+    """
+    start = datetime.now()
+    end = datetime.strptime(end, '%Y-%m-%d %H:%M:%S')
+    start = time.mktime(start.timetuple()) * 1000 + start.microsecond / 1000
+    end = time.mktime(end.timetuple()) * 1000 + end.microsecond / 1000
+
+    total_seconds = (end - start) / 1000
+    hours = int(total_seconds / 3600)
+    days = int(hours / 24)
+    minutes = int((total_seconds / 60) % 60)
+    seconds = int(total_seconds % 60)
+
+    return total_seconds, days, hours, minutes, seconds
 
 
 def filter_tags(htmlstr):
