@@ -11,9 +11,9 @@ import settings
 engine = create_engine(
     "mysql+mysqlconnector://root:root@49.232.19.51:33061/proxy_server",
     max_overflow=0,  # 超过连接池大小外最多创建的连接
-    pool_size=200,  # 连接池大小
-    pool_timeout=10,  # 连接池中没有已建立的连接时，新建立 http 连接最多等待的时间
-    pool_recycle=30,  # session 对象被重置，防止 mysql 清除建立的 http 连接后，session 对象还保持原有会话而报错
+    pool_size=300,  # 连接池大小
+    pool_timeout=20,  # 连接池中没有已建立的连接时，新建立 http 连接最多等待的时间
+    pool_recycle=60 * 5,  # session 对象被重置，防止 mysql 清除建立的 http 连接后，session 对象还保持原有会话而报错
 )
 
 Base = declarative_base()
