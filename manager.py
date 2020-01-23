@@ -26,7 +26,7 @@ def connect():
     :return:
     """
     global _thread
-    socket_io.emit('message', {'data': "service connected!"}, namespace='/conn_logging', callback=ack)
+    socket_io.emit('message', {'data': "service connected!"}, callback=ack)
     logger.info(f'客户端已成功连接！')
     with lock:
         if _thread is None:

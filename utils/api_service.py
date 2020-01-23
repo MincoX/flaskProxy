@@ -80,6 +80,10 @@ def permission_api_service(perms=None):
             except Exception as e:
                 logger.error(e)
                 logging.error(traceback.format_exc())
+                return json.dumps({
+                    'status': 0,
+                    'message': '网络拥塞，请求失败！'
+                })
             finally:
                 session.close()
 
