@@ -105,7 +105,7 @@ def get_server_log(ser):
     """
 
     error_list = redis_cli.get_range_list('spider_error', 0, -1)
-    error_list = [per.decode().split('||') for per in error_list]
+    error_list = list(reversed([per.decode().split('||') for per in error_list]))
 
     res = {
         'status': 1,
