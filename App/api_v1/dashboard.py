@@ -7,9 +7,9 @@ from sqlalchemy import cast, DATE, func, and_
 
 import settings
 from utils import logger
-from models import Admin, Proxy
-from utils.tools import object_to_dict, hour_range
+from models import Admin, Proxy, CeleryTask
 from utils.api_service import ApiService, permission_api_service
+from utils.tools import object_to_dict, hour_range, calculate_time_countdown
 
 
 # @ApiService
@@ -35,19 +35,33 @@ def get_store_info(service):
     :param service:
     :return:
     """
-    # TODO 所有代理数量，
-    #  可用代理数量，
-    #  分数阀值，
-    #  低于阀值的数量
     session = service.session
+
+    date_today = datetime.today().strftime('%Y-%m-%d')
     proxies = session.query(Proxy)
     active_count = proxies.filter(Proxy.speed != -1).count()
     total_count = proxies.count()
     disable_count = proxies.filter(Proxy.speed == -1).count()
 
+    tasks = session.query(CeleryTask).filter(cast(CeleryTask.start_time, DATE) == date_today)
+
+    spider_task = tasks.filter(CeleryTask.task_name == 'file_celery.schedule_spider.schedule_spider') \
+        .order_by(CeleryTask.id.desc()).first()
+    spider = calculate_time_countdown(
+        (spider_task.start_time + timedelta(hours=4)).strftime('%Y-%m-%d %H:%M:%S')
+    )
+
+    check_task = tasks.filter(CeleryTask.task_name == 'file_celery.schedule_check.schedule_check') \
+        .order_by(CeleryTask.id.desc()).first()
+    check = calculate_time_countdown(
+        (check_task.start_time + timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')
+    )
+
     res = {
         'status': 1,
         'store_info': {'active_count': active_count, 'total_count': total_count, 'disable_count': disable_count},
+        'spider_countdown': [spider[2], spider[3], spider[4]],
+        'check_countdown': [check[2], check[3], check[4]]
     }
 
     return json.dumps(res)
