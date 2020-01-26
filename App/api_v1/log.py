@@ -41,8 +41,8 @@ def get_log_dashboard(ser):
         'status': 1,
         'server': {
             'error_count': redis_cli.l_len('spider_error'),
-            'error_info': redis_cli.r_pop('spider_error').decode()
-            if redis_cli.r_pop('spider_error') is not None else ''
+            'error_info': redis_cli.get_range_list('spider_error', -1, -1).decode()
+            if redis_cli.l_len('spider_error') >= 1 else ''
         },
         'spider': {
             'status': spider_tasks.first().task_status,
@@ -91,6 +91,25 @@ def post_login_log(ser):
             }
             for login_log in login_logs
         ]
+    }
+
+    return json.dumps(res)
+
+
+@permission_api_service(perms=['base'])
+def get_server_log(ser):
+    """
+    获取 redis 中的报错日志
+    :param ser:
+    :return:
+    """
+
+    error_list = redis_cli.get_range_list('spider_error', 0, -1)
+    error_list = [per.decode().split('||') for per in error_list]
+
+    res = {
+        'status': 1,
+        'error_list': error_list
     }
 
     return json.dumps(res)
