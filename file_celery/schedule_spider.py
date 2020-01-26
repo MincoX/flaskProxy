@@ -90,7 +90,7 @@ class RunSpider:
         except Exception as e:
             logger.error(f'spider error: {e}')
 
-            error_info = str(type(self).__name__) + ':' + str(e) + '||' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            error_info = str(type(self).__name__) + '>>>' + str(e) + '||' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             self.redis_cli.push_tail('spider_error', error_info)
 
     def run(self):

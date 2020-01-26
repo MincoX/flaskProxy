@@ -41,7 +41,7 @@ def get_log_dashboard(ser):
         'status': 1,
         'server': {
             'error_count': redis_cli.l_len('spider_error'),
-            'error_info': redis_cli.get_range_list('spider_error', -1, -1)[0].decode()
+            'error_info': redis_cli.get_range_list('spider_error', -1, -1)[0].decode().split('||')
             if redis_cli.l_len('spider_error') >= 1 else ''
         },
         'spider': {
