@@ -47,15 +47,21 @@ def get_store_info(service):
 
     spider_task = tasks.filter(CeleryTask.task_name == 'file_celery.schedule_spider.schedule_spider') \
         .order_by(CeleryTask.id.desc()).first()
-    spider = calculate_time_countdown(
-        (spider_task.start_time + timedelta(hours=4)).strftime('%Y-%m-%d %H:%M:%S')
-    )
+    if spider_task is not None:
+        spider = calculate_time_countdown(
+            (spider_task.start_time + timedelta(hours=4)).strftime('%Y-%m-%d %H:%M:%S')
+        )
+    else:
+        spider = ['' for i in range(4)]
 
     check_task = tasks.filter(CeleryTask.task_name == 'file_celery.schedule_check.schedule_check') \
         .order_by(CeleryTask.id.desc()).first()
-    check = calculate_time_countdown(
-        (check_task.start_time + timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')
-    )
+    if check_task is not None:
+        check = calculate_time_countdown(
+            (check_task.start_time + timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')
+        )
+    else:
+        check = ['' for i in range(4)]
 
     res = {
         'status': 1,

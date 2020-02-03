@@ -20,16 +20,12 @@ class Service:
 class ApiService:
 
     def __init__(self, func):
-        # 程序开启，装饰器被加载到内存中，此时 api session 被创建，以后不再创建
         self.session = Session()
-        print(f'api session >>> {id(self.session)}')
         self.func = func
 
     def func_decorate(self, *args, **kwargs):
         try:
-            # 每一个视图函数，都会去创建一个 Service (即每个视图函数的 session 不同，但是同一个视图函数中的 session 是同一个对象)
             service = Service(self.session)
-            print(f'view session >>> {id(service.session)}')
             return self.func(service, *args, **kwargs)
 
         except Exception as e:
@@ -37,7 +33,6 @@ class ApiService:
             logging.error(traceback.format_exc(limit=None))
 
         finally:
-            print(f'session close {self.session}')
             self.session.close()
 
     def __call__(self, *args, **kwargs):
