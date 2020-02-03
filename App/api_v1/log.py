@@ -51,13 +51,13 @@ def get_log_dashboard(ser):
             if redis_cli.l_len('spider_error') >= 1 else ''
         },
         'spider': {
-            'status': spider_tasks.first().task_status,
+            'status': spider_tasks.first().task_status if spider_tasks.first() is not None else '',
             'countdown': [spider[2], spider[3], spider[4]],
             'task_active': f'{spider_tasks.count()} / 6',
             'harvest': sum([task.harvest for task in spider_tasks])
         },
         'check': {
-            'status': check_tasks.first().task_status,
+            'status': check_tasks.first().task_status if check_tasks.first() is not None else '',
             'countdown': [check[2], check[3], check[4]],
             'task_active': f'{check_tasks.count()} / 4',
             'harvest': sum([task.harvest for task in check_tasks])
