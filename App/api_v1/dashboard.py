@@ -52,7 +52,7 @@ def get_store_info(service):
             (spider_task.start_time + timedelta(hours=4)).strftime('%Y-%m-%d %H:%M:%S')
         )
     else:
-        spider = ['' for i in range(4)]
+        spider = ['' for i in range(5)]
 
     check_task = tasks.filter(CeleryTask.task_name == 'file_celery.schedule_check.schedule_check') \
         .order_by(CeleryTask.id.desc()).first()
@@ -61,7 +61,7 @@ def get_store_info(service):
             (check_task.start_time + timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')
         )
     else:
-        check = ['' for i in range(4)]
+        check = ['' for i in range(5)]
 
     res = {
         'status': 1,
