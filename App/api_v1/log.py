@@ -27,15 +27,21 @@ def get_log_dashboard(ser):
 
     spider_tasks = tasks.filter(CeleryTask.task_name == 'file_celery.schedule_spider.schedule_spider') \
         .order_by(CeleryTask.id.desc())
-    spider = calculate_time_countdown(
-        (spider_tasks.first().start_time + timedelta(hours=4)).strftime('%Y-%m-%d %H:%M:%S')
-    )
+    if spider_tasks.first() is not None:
+        spider = calculate_time_countdown(
+            (spider_tasks.first().start_time + timedelta(hours=4)).strftime('%Y-%m-%d %H:%M:%S')
+        )
+    else:
+        spider = ['' for i in range(5)]
 
     check_tasks = tasks.filter(CeleryTask.task_name == 'file_celery.schedule_check.schedule_check') \
         .order_by(CeleryTask.id.desc())
-    check = calculate_time_countdown(
-        (check_tasks.first().start_time + timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')
-    )
+    if check_tasks.first() is not None:
+        check = calculate_time_countdown(
+            (check_tasks.first().start_time + timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')
+        )
+    else:
+        check = ['' for i in range(5)]
 
     res = {
         'status': 1,
