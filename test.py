@@ -1,9 +1,9 @@
 import os
 import time
 import datetime
-
-from utils import logger, redis_pool
-from utils.tools import calculate_time_countdown
+#
+# from utils import logger, redis_pool
+# from utils.tools import calculate_time_countdown
 
 
 # print('start')
@@ -69,7 +69,7 @@ def get_file_list(path):
         # print("#######file list#######")
         for filename in files:
             # print(filename)
-            if filename == 'socket.py':
+            if filename.endswith('.pb'):
                 fullname = os.path.join(home, filename)
                 print(fullname)
         # print("#######file list#######")
@@ -79,11 +79,11 @@ if __name__ == '__main__':
     # print('debug')
     # test(1, 2)
     # dec()
-    # get_file_list('D:/Virtualenvs/Spider')
+    get_file_list(r'C:/Users/Minco/Desktop/人脸识别小程序')
 
-    redis_cli = redis_pool.RedisModel()
-    res = redis_cli.get_range_list('spider_error', 0, -1)
-    res = list(reversed([per.decode().split('||') for per in res]))
-    print(res)
-    len_spider_error = redis_cli.l_len('spider_error')
-    print(len_spider_error)
+    # redis_cli = redis_pool.RedisModel()
+    # res = redis_cli.get_range_list('spider_error', 0, -1)
+    # res = list(reversed([per.decode().split('||') for per in res]))
+    # print(res)
+    # len_spider_error = redis_cli.l_len('spider_error')
+    # print(len_spider_error)
