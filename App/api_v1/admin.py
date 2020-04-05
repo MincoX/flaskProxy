@@ -10,7 +10,7 @@ from flask import request, render_template, redirect, abort, jsonify, make_respo
 import settings
 from App import login_manager
 from App.api_v1 import api_v1_app
-from models import Session, Admin, AdminLoginLog
+from models import Session, Admin, AdminLoginLog, Role
 from utils.api_service import service_view
 
 
@@ -39,6 +39,8 @@ def register():
     # TODO
     #  send email verify register
     account = Admin(username=username, password=hashlib.md5((password + settings.SECRET_KEY).encode()).hexdigest())
+    role = session.query(Role).filter(Role.slug == 'role1').first()
+    account.roles.append(role)
     session.add(account)
     session.commit()
     session.close()

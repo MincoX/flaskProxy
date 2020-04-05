@@ -72,7 +72,7 @@ def get_admins(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting'])
 def post_add_perm(ser):
     """
     添加权限
@@ -235,7 +235,7 @@ def post_set_role(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting'])
 def post_add_role(ser):
     """
     添加角色
@@ -347,7 +347,7 @@ def post_toggle_active(ser):
 
 
 # @ApiService
-@permission_api_service(perms=['base', 'do_setting', 'do_auth', 'test'])
+@permission_api_service(perms=['base', 'do_setting', 'do_auth'])
 def post_reset_password(ser):
     """
     重置密码

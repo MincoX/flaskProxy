@@ -102,7 +102,7 @@ def post_login_log(ser):
     return json.dumps(res)
 
 
-@permission_api_service(perms=['base'])
+@permission_api_service(perms=['base', 'do_setting'])
 def get_server_log(ser):
     """
     获取 redis 中的报错日志
