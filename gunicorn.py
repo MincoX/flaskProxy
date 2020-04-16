@@ -1,19 +1,30 @@
-import os
-import multiprocessing
+# 监听地址和端口
+bind = '127.0.0.1:9999'
 
+# 进程的数量，缺省为1
 workers = 1  # 使用 socketio worker 要设置为 1
-# workers = multiprocessing.cpu_count() * 2 + 1
 
-bind = '0.0.0.0:9999'
-chdir = '/usr/src/Proxy_Server'
-worker_class = 'eventlet'
-threads = 2  # 指定每个进程开启的线程数
-worker_connections = 100
+# 设置守护进程（后台运行）, 若将进程交给 supervisor 管理，则必须关闭守护进程
+daemon = 'true'
+
+# worker进程的工作方式
+# 有 sync, eventlet, gevent, tornado, gthread, 缺省值sync
+worker_class = "eventlet"
 
 timeout = 30
-daemon = 'false'  # 守护进程,将进程交给supervisor管理
 
-loglevel = 'debug'  # 日志级别，这个日志级别指的是错误日志的级别，而访问日志的级别无法设置
-access_log_format = '%(t)s %(p)s %(h)s "%(r)s" %(s)s %(L)s %(b)s %(f)s" "%(a)s"'  # 设置 gunicorn 访问日志格式，错误日志无法设置
-access_log = "/var/log/gunicorn_access.log"  # 访问日志文件
-error_log = "/var/log/gunicorn_error.log"  # 错误日志文件
+# 指定项目的根目录，在 app 加载之前，进入到此目录
+chdir = '/usr/src/Proxy_Flask'
+
+# 设置进程文件目录
+pidfile = '/usr/src/Proxy_Flask/gunicorn.pid'
+
+# 客户端最大同时连接数。只适用于eventlet， gevent工作方式
+worker_connections = 1000
+
+# 设置访问日志和错误信息日志路径
+accesslog = '/usr/src/Proxy_Flask/gunicorn_acess.log'
+errorlog = '/usr/src/Proxy_Flask/gunicorn_error.log'
+
+# 设置日志等级
+loglevel = 'info'
