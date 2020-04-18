@@ -63,7 +63,7 @@ def permission_api_service(perms=None):
                     # abort(403)
                     return json.dumps({
                         'status': 0,
-                        'message': '您没有权限，可以联系超级管理员升级角色！'
+                        'message': '你的身份受限，操作失败！'
                     })
             # if current_user.__tablename__ == 'account':
             #     # perms is not None and perms unequal to base

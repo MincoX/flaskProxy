@@ -99,7 +99,7 @@ def index():
 @login_required
 def service(slug):
     # session = Session()
-    # account = session.query(Admin).filter(Admin.username == 'proxy_base').first()
+    # account = session.query(Admin).filter(Admin.username == 'MincoX').first()
     # login_user(account, remember=True)
 
     res = service_view(slug)
