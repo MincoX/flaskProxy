@@ -3,7 +3,7 @@ import sys
 import redis
 
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-sys.path.insert(0, os.path.join(BASE_DIR, 'Proxy_Flask'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'Proxy_Server'))
 
 SECRET_KEY = 'ip_pool_flask_server'
 ADMIN_NAME = 'MincoX'
