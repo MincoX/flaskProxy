@@ -9,6 +9,7 @@ from flask import request, render_template, redirect, abort, jsonify, make_respo
 
 import settings
 from App import login_manager
+from asynchronous import common_task
 from App.api_v1 import api_v1_app
 from models import Session, Admin, AdminLoginLog, Role
 from utils.api_service import service_view
@@ -40,6 +41,13 @@ def register():
     #  send email verify register
     account = Admin(username=username, password=hashlib.md5((password + settings.SECRET_KEY).encode()).hexdigest())
     role = session.query(Role).filter(Role.slug == 'role1').first()
+    # 邮件提示 
+    common_task.mail_send.delay(
+        subject='Mp',
+        sender='MincoX',
+        recipients=['903444601@qq.com'],
+        body=f'新用户：{username}，账号注册成功！'
+    )
     account.roles.append(role)
     session.add(account)
     session.commit()
@@ -61,6 +69,15 @@ def login():
         account = session.query(Admin).filter(Admin.username == username).first()
         if account:
             if account.password == hashlib.md5((password + settings.SECRET_KEY).encode()).hexdigest():
+
+                # 邮件提示 
+                common_task.mail_send.delay(
+                    subject='Mp',
+                    sender='MincoX',
+                    recipients=['903444601@qq.com'],
+                    body=f'{username}用户登录！'
+                )
+
                 login_user(account)
                 login_log = AdminLoginLog(
                     admin_id=account.id,

@@ -18,8 +18,8 @@ class Config:
     SECRET_KEY = 'ip_pool_flask_server'
 
     # Redis
-    REDIS_HOST = '49.232.19.51'
-    REDIS_PORT = 63791
+    REDIS_HOST = '47.102.134.101'
+    REDIS_PORT = 6379
     REDIS_PWD = ''
 
     # flask_session

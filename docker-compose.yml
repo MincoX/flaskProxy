@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+
+
+  proxy_server_web:
+    container_name: proxy
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: proxy_server
+    ports:
+      - "19999:9999"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./:/usr/src/flaskProxy
+      - ./source_code/socket.py:/usr/local/lib/python3.7/site-packages/engineio/socket.py
+      - ./source_code/server.py:/usr/local/lib/python3.7/site-packages/socketio/server.py
+
