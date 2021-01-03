@@ -1,4 +1,4 @@
-lalembic==1.2.1
+alembic==1.2.1
 amqp==2.5.2
 anyjson==0.3.3
 asgiref==3.2.3
@@ -10,7 +10,6 @@ cffi==1.13.0
 chardet==3.0.4
 Click==7.0
 Django==3.0.2
-django-celery==3.3.1
 dnspython==1.16.0
 eventlet==0.25.1
 Flask==1.1.1

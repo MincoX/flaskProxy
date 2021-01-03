@@ -6,5 +6,5 @@ COPY requirements.txt /usr/src/flaskProxy
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r /usr/src/flaskProxy/requirements.txt
 COPY . /usr/src/flaskProxy
 
-# CMD ["gunicorn", "-c", "/usr/src/flaskProxy/gunicorn.py", "manager:app"]
+CMD ["gunicorn", "-c", "/usr/src/flaskProxy/gunicorn.py", "manager:app"]
 
