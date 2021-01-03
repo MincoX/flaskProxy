@@ -80,7 +80,7 @@ def calculate_time_countdown(end):
     start = time.mktime(start.timetuple()) * 1000 + start.microsecond / 1000
     end = time.mktime(end.timetuple()) * 1000 + end.microsecond / 1000
 
-    total_seconds = (end - start) / 1000
+    total_seconds = (start - end) / 1000
     hours = int(total_seconds / 3600)
     days = int(hours / 24)
     minutes = int((total_seconds / 60) % 60)
