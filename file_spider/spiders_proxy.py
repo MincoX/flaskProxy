@@ -8,7 +8,7 @@ class XiciSpider(BaseSpider):
     """
     实现西刺代理的爬取
     """
-    urls = [f'https://www.xicidaili.com/nn/{x}' for x in range(1, 10)]
+    urls = [f'https://www.xicidaili.com/nn/{x}' for x in range(1, 1)]
 
     group_xpath = "//*[@id='ip_list']/tr[position()>1]"
     detail_xpath = {
@@ -37,7 +37,7 @@ class KuaiSpider(BaseSpider):
     """
     实现 快代理 ip 网站的爬虫
     """
-    urls = [f'https://www.kuaidaili.com/free/inha/{x}/' for x in range(1, 6)]
+    urls = [f'https://www.kuaidaili.com/free/inha/{x}/' for x in range(1, 20)]
 
     group_xpath = "//*[@id='list']/table/tbody/tr"
 
@@ -61,10 +61,8 @@ class Ip66Spider(BaseSpider):
     http://www.66ip.cn/1.html
     实现 66ip 网站代理 ip 的爬取
     """
-    urls = [f'http://www.66ip.cn/{x}.html' for x in range(1, 20)]
-
-    group_xpath = "//*[@id='main']/div/div[1]/table/tr[position()>1]"
-
+    urls = [f'http://www.66ip.cn/{x}.html' for x in range(1, 999)]
+    group_xpath = "//tr[position()>1]"
     detail_xpath = {
         'ip': './td[1]/text()',
         'port': './td[2]/text()',
@@ -73,16 +71,6 @@ class Ip66Spider(BaseSpider):
 
 
 if __name__ == '__main__':
-
-    config = {
-        'urls': [f'https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-{x}' for x in range(1, 6)],
-        'group_xpath': "//*[@id='page']/table[2]/tr[position()>1]",
-        'detail_xpath': {
-            'ip': './td[2]/text()',
-            'port': './td[3]/text()',
-            'area': './td[5]/text()',
-        }
-    }
 
     spider = Ip66Spider()
     for item in spider.get_proxies():
