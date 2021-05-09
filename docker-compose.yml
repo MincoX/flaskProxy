@@ -11,7 +11,7 @@ services:
       dockerfile: ./Dockerfile
     image: proxy_server
     ports:
-      - "19999:9999"
+      - "10001:5000"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./:/usr/src/flaskProxy

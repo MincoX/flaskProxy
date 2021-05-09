@@ -79,4 +79,4 @@ def background_thread():
 #         socket_io.sleep(10)
 
 if __name__ == '__main__':
-    socket_io.run(app, host='0.0.0.0', port=9999)
+    socket_io.run(app, host='0.0.0.0', port=5000)

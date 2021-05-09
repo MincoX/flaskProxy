@@ -4,7 +4,7 @@ import multiprocessing
 workers = 1  # 使用 socketio worker 要设置为 1
 # workers = multiprocessing.cpu_count() * 2 + 1
 
-bind = '0.0.0.0:9999'
+bind = '0.0.0.0:5000'
 chdir = '/usr/src/flaskProxy'
 worker_class = 'eventlet'
 threads = 2  # 指定每个进程开启的线程数
