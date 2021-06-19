@@ -18,7 +18,7 @@ class Config:
     SECRET_KEY = 'ip_pool_flask_server'
 
     # Redis
-    REDIS_HOST = '47.102.134.101'
+    REDIS_HOST = '47.98.56.172'
     REDIS_PORT = 6379
     REDIS_PWD = ''
 
