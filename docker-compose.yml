@@ -9,7 +9,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    image: proxy_server
+    image: proxy
     ports:
       - "10001:5000"
     volumes:
