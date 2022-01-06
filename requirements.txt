@@ -4,7 +4,7 @@ anyjson==0.3.3
 asgiref==3.2.3
 Babel==2.7.0
 billiard==3.6.2.0
-celery==4.4.0
+celery==5.2.2
 certifi==2019.9.11
 cffi==1.13.0
 chardet==3.0.4
